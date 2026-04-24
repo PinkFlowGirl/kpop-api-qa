@@ -6,6 +6,75 @@ API REST desenvolvida com Node.js e Express para cadastro e gerenciamento de gru
 
 ---
 
+## 🚀 Como Executar
+
+### Pré-requisitos
+
+* Node.js (v18 ou superior)
+* npm
+
+### Instalação
+
+```bash
+npm install
+```
+
+### Executar o servidor
+
+```bash
+npm start
+```
+
+O servidor estará disponível em `http://localhost:3000`
+
+---
+
+## 📡 Exemplos de Uso
+
+### Criar um grupo
+
+```bash
+curl -X POST http://localhost:3000/groups \
+  -H "Content-Type: application/json" \
+  -d '{"name": "BTS", "debutDate": "2013", "company": "BigHit"}'
+```
+
+### Listar todos os grupos
+
+```bash
+curl http://localhost:3000/groups
+```
+
+### Buscar grupo por ID
+
+```bash
+curl http://localhost:3000/groups/1
+```
+
+### Atualizar grupo
+
+```bash
+curl -X PUT http://localhost:3000/groups/1 \
+  -H "Content-Type: application/json" \
+  -d '{"name": "BTS", "debutDate": "2013", "company": "Hybe"}'
+```
+
+### Remover grupo
+
+```bash
+curl -X DELETE http://localhost:3000/groups/1
+```
+
+---
+
+## 🧪 Como Rodar os Testes
+
+```bash
+npm test
+```
+
+---
+
 ## Arquitetura
 
 O projeto segue uma arquitetura em camadas:

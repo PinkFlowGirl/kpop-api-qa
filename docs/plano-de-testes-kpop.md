@@ -18,6 +18,14 @@ Serão testados os seguintes endpoints:
 
 ---
 
+## Ambiente de Teste
+
+* **URL Base:** http://localhost:3000
+* **Banco de dados:** Em memória (resetar antes de cada teste)
+* **Formato:** JSON
+
+---
+
 ## Estratégia de Testes
 
 Os testes serão realizados em três níveis:
@@ -31,6 +39,18 @@ Ferramentas sugeridas:
 * Mocha
 * Supertest
 * Chai
+
+---
+
+## Dados de Teste (Fixtures)
+
+```javascript
+const groups = [
+  { name: "BLACKPINK", company: "YG", debutYear: 2016 },
+  { name: "BTS", company: "BigHit", debutYear: 2013 },
+  { name: "TWICE", company: "JYP", debutYear: 2015 }
+];
+```
 
 ---
 
@@ -181,6 +201,24 @@ Ferramentas sugeridas:
 * Regras de negócio são respeitadas
 * Validações impedem dados inválidos
 * Testes automatizados passam com sucesso
+
+---
+
+## Cobertura de Testes
+
+| Caso de Teste | Endpoint | Método | Status | Observações |
+|---------------|----------|--------|--------|-------------|
+| CT01 | POST /groups | POST | - | Pendente |
+| CT02 | POST /groups | POST | - | Pendente |
+| CT03 | POST /groups | POST | - | Pendente |
+| CT04 | GET /groups | GET | - | Pendente |
+| CT05 | GET /groups | GET | - | Pendente |
+| CT06 | GET /groups/:id | GET | - | Pendente |
+| CT07 | GET /groups/:id | GET | - | Pendente |
+| CT08 | PUT /groups/:id | PUT | - | Pendente |
+| CT09 | PUT /groups/:id | PUT | - | Pendente |
+| CT10 | DELETE /groups/:id | DELETE | - | Pendente |
+| CT11 | DELETE /groups/:id | DELETE | - | Pendente |
 
 ---
 

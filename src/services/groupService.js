@@ -1,30 +1,46 @@
-const { groups, getNextId } = require('../models/database.js');
-const Group = require('../models/groupModel.js');
+const { groups, getNextId } = require('../models/database');
 
 function createGroup(data) {
-    const { name, debutDate, company, members, fandom, albuns } = data;
+  const { name, fandom, debutYear } = data;
 
-    if (!name || !debutDate || !company) {
-        throw new Error('Campos obrigatorios nao informados');
-    }
+  // validações
+  if (!name || name.trim() === '') {
+    throw new Error('Nome é obrigatório');
+  }
 
-    const newGroup = new Group(
-        getNextId(),
-        name,
-        debutDate,
-        company,
-        members,
-        fandom,
-        albuns,
-        []
+  if (!fandom || fandom.trim() === '') {
+    throw new Error('Fandom é obrigatório');
+  }
 
-    );
+  if (debutYear === undefined || isNaN(Number(debutYear))) {
+    throw new Error('Ano de debut inválido');
+  }
+  // duplicidade
+  const alreadyExists = groups.find(
+    (group) => group.name.toLowerCase() === name.toLowerCase()
+  );
 
-    groups.push(newGroup);
-    return newGroup;
+  if (alreadyExists) {
+    throw new Error('Grupo já cadastrado');
+  }
+
+  const newGroup = {
+    id: getNextId(),
+    name,
+    fandom,
+    debutYear: Number(debutYear)
+  };
+
+  groups.push(newGroup);
+
+  return newGroup;
+}
+
+function getAllGroups() {
+  return groups;
 }
 
 module.exports = {
-    createGroup
+  createGroup,
+  getAllGroups
 };
-
