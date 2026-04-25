@@ -9,4 +9,7 @@ router.post('/groups', groupController.createGroup);
 // (opcional) listar grupos
 router.get('/groups', groupController.getAllGroups);
 
+//
+router.get('/groups/:id', groupController.getGroupById);
+
 module.exports = router;

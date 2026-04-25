@@ -36,11 +36,26 @@ function createGroup(data) {
   return newGroup;
 }
 
-function getAllGroups() {
-  return groups;
+function getAllGroups(page = 1, limit = 10) {
+  const startIndex = (page - 1) * limit;
+  const endIndex = page * limit;
+
+  const paginatedGroups = groups.slice(startIndex, endIndex);
+
+  return {
+    total: groups.length,
+    page,
+    limit,
+    data: paginatedGroups
+  };
+}
+
+function getGroupById(id) {
+  return groups.find(g => g.id === Number(id));
 }
 
 module.exports = {
   createGroup,
-  getAllGroups
+  getAllGroups,
+  getGroupById
 };

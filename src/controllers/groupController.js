@@ -11,11 +11,34 @@ function createGroup(req, res) {
 
 function getAllGroups(req, res) {
   try {
-    const groups = groupService.getAllGroups();
-    res.status(200).json(groups);
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 10;
+
+    const result = groupService.getAllGroups(page, limit);
+
+    res.status(200).json(result);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
 }
 
-module.exports = { createGroup, getAllGroups };
+function getGroupById(req, res) {
+  try {
+    const group = groupService.getGroupById(req.params.id);
+
+    if (!group) {
+      return res.status(404).json({ error: "Grupo não encontrado" });
+    }
+
+    return res.status(200).json(group);
+
+  } catch (error) {
+    return res.status(500).json({ error: 'Erro interno' });
+  }
+}
+
+module.exports = {
+  createGroup,
+  getAllGroups,
+  getGroupById
+};
