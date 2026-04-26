@@ -10,35 +10,43 @@ function createGroup(req, res) {
 }
 
 function getAllGroups(req, res) {
-  try {
-    const page = parseInt(req.query.page) || 1;
-    const limit = parseInt(req.query.limit) || 10;
-
-    const result = groupService.getAllGroups(page, limit);
-
-    res.status(200).json(result);
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
+  res.json(groupService.getAllGroups());
 }
 
 function getGroupById(req, res) {
-  try {
-    const group = groupService.getGroupById(req.params.id);
+  const group = groupService.getGroupById(req.params.id);
 
-    if (!group) {
-      return res.status(404).json({ error: "Grupo não encontrado" });
-    }
-
-    return res.status(200).json(group);
-
-  } catch (error) {
-    return res.status(500).json({ error: 'Erro interno' });
+  if (!group) {
+    return res.status(404).json({ error: "Grupo não encontrado" });
   }
+
+  res.json(group);
+}
+
+function updateGroup(req, res) {
+  const updated = groupService.update(req.params.id, req.body);
+
+  if (!updated) {
+    return res.status(404).json({ error: "Grupo não encontrado" });
+  }
+
+  res.json(updated);
+}
+
+function deleteGroup(req, res) {
+  const removed = groupService.remove(req.params.id);
+
+  if (!removed) {
+    return res.status(404).json({ error: "Grupo não encontrado" });
+  }
+
+  res.status(204).send();
 }
 
 module.exports = {
   createGroup,
   getAllGroups,
-  getGroupById
+  getGroupById,
+  updateGroup,
+  deleteGroup
 };

@@ -1,21 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const authMiddleware = require('../middlewares/authMiddleware');
-
-const groups = [
-  {
-    id: 1,
-    name: 'BTS',
-    debutYear: 2013,
-    fandom: 'ARMY'
-  },
-  {
-    id: 2,
-    name: 'BLACKPINK',
-    debutYear: 2016,
-    fandom: 'BLINK'
-  }
-];
+const groupController = require('../controllers/groupController');
 
 /**
  * @swagger
@@ -34,36 +20,24 @@ const groups = [
  *             properties:
  *               name:
  *                 type: string
- *               debutYear:
- *                 type: integer
+ *                 example: NEW JEANS
  *               fandom:
  *                 type: string
+ *                 example: Bunnies
+ *               debutYear:
+ *                 type: integer
+ *                 example: 2022
  *     responses:
  *       201:
- *         description: Grupo criado
+ *         description: Grupo criado com sucesso
  */
-router.post('/groups', authMiddleware, (req, res) => {
- 
-  const { name, debutYear, fandom } = req.body;
-
-    const newGroup = {
-    id: groups.length + 1,
-    name,
-    debutYear,
-    fandom
-  };
-
-  groups.push(newGroup);
-
-  res.status(201).json(newGroup);
-});
-
+router.post('/groups', authMiddleware, groupController.createGroup);
 
 /**
  * @swagger
  * /api/groups:
  *   get:
- *     summary: Lista todos os grupos de K-pop
+ *     summary: Lista todos os grupos
  *     tags: [Groups]
  *     security:
  *       - bearerAuth: []
@@ -71,16 +45,13 @@ router.post('/groups', authMiddleware, (req, res) => {
  *       200:
  *         description: Lista de grupos
  */
-router.get('/groups', authMiddleware, (req, res) => {
-  res.json(groups);
-});
-
+router.get('/groups', authMiddleware, groupController.getAllGroups);
 
 /**
  * @swagger
  * /api/groups/{id}:
  *   get:
- *     summary: Busca grupo por ID
+ *     summary: Busca um grupo por ID
  *     tags: [Groups]
  *     security:
  *       - bearerAuth: []
@@ -96,15 +67,65 @@ router.get('/groups', authMiddleware, (req, res) => {
  *       404:
  *         description: Grupo não encontrado
  */
-router.get('/groups/:id', authMiddleware, (req, res) => {
-  const group = groups.find(g => g.id == req.params.id);
+router.get('/groups/:id', authMiddleware, groupController.getGroupById);
 
-  if (!group) {
-    return res.status(404).json({ message: 'Grupo não encontrado' });
-  }
+/**
+ * @swagger
+ * /api/groups/{id}:
+ *   put:
+ *     summary: Atualiza um grupo
+ *     tags: [Groups]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: integer
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               name:
+ *                 type: string
+ *               fandom:
+ *                 type: string
+ *               debutYear:
+ *                 type: integer
+ *     responses:
+ *       200:
+ *         description: Grupo atualizado
+ *       404:
+ *         description: Grupo não encontrado
+ */
+router.put('/groups/:id', authMiddleware, groupController.updateGroup);
+router.put('/groups/:id', authMiddleware, groupController.updateGroup);
 
-  res.json(group);
-});
-
+/**
+ * @swagger
+ * /api/groups/{id}:
+ *   delete:
+ *     summary: Remove um grupo
+ *     tags: [Groups]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: integer
+ *     responses:
+ *       204:
+ *         description: Grupo removido
+ *       404:
+ *         description: Grupo não encontrado
+ */
+router.delete('/groups/:id', authMiddleware, groupController.deleteGroup);
+router.delete('/groups/:id', authMiddleware, groupController.deleteGroup);
 
 module.exports = router;

@@ -1,224 +1,136 @@
-# API de Cadastro de Grupos de K-Pop
+# Kpop API
 
-## Objetivo
-
-API REST desenvolvida com Node.js e Express para cadastro e gerenciamento de grupos de K-Pop.
-
----
-
-## 🚀 Como Executar
-
-### Pré-requisitos
-
-* Node.js (v18 ou superior)
-* npm
-
-### Instalação
-
-```bash
-npm install
-```
-
-### Executar o servidor
-
-```bash
-npm start
-```
-
-O servidor estará disponível em `http://localhost:3000`
-
----
-
-## 📡 Exemplos de Uso
-
-### Criar um grupo
-
-```bash
-curl -X POST http://localhost:3000/groups \
-  -H "Content-Type: application/json" \
-  -d '{"name": "BTS", "debutDate": "2013", "company": "BigHit"}'
-```
-
-### Listar todos os grupos
-
-```bash
-curl http://localhost:3000/groups
-```
-
-### Buscar grupo por ID
-
-```bash
-curl http://localhost:3000/groups/1
-```
-
-### Atualizar grupo
-
-```bash
-curl -X PUT http://localhost:3000/groups/1 \
-  -H "Content-Type: application/json" \
-  -d '{"name": "BTS", "debutDate": "2013", "company": "Hybe"}'
-```
-
-### Remover grupo
-
-```bash
-curl -X DELETE http://localhost:3000/groups/1
-```
-
----
-
-## 🧪 Como Rodar os Testes
-
-```bash
-npm test
-```
-
----
-
-## Arquitetura
-
-O projeto segue uma arquitetura em camadas:
-
-* Routes → definição dos endpoints
-* Controllers → tratamento de requisições e respostas
-* Services → regras de negócio
-* Models → estrutura de dados
-
----
+API REST desenvolvida em Node.js para gerenciamento de grupos de K-pop,
+com autenticação via JWT e documentação com Swagger.
 
 ## Tecnologias utilizadas
 
-* Node.js
-* Express
-* JavaScript
+-   Node.js
+-   Express
+-   JWT (JSON Web Token)
+-   Swagger (swagger-jsdoc + swagger-ui-express)
 
----
+## Estrutura do projeto
 
-## Funcionalidades (User Stories)
+    src/
+     ├── controllers/
+     ├── services/
+     ├── routes/
+     ├── middlewares/
+     ├── models/
+     └── docs/
+    app.js
 
-### US1 — Criar grupo de K-Pop
+## Como rodar o projeto
 
-Como administrador da plataforma
-Quero cadastrar um novo grupo
-Para que ele esteja disponível na base de dados
+1.  Instale as dependências:
 
-Critérios de aceitação:
+```{=html}
+<!-- -->
+```
+    npm install
 
-* Deve ser possível informar nome do grupo
-* Deve ser possível informar agência (empresa)
-* Deve ser possível informar ano de debut
-* Não permitir nomes duplicados
-* Retornar 201 Created
+2.  Inicie o servidor:
 
----
+```{=html}
+<!-- -->
+```
+    npm start
 
-### US2 — Listar grupos cadastrados
+3.  O servidor estará rodando em:
 
-Como usuário da API
-Quero visualizar todos os grupos cadastrados
+```{=html}
+<!-- -->
+```
+    http://localhost:3000
 
-Critérios de aceitação:
+## Documentação Swagger
 
-* Retornar lista de grupos
-* Suportar paginação (page e limit)
-* Retornar 200 OK
-* Retornar lista vazia se não houver dados
+Acesse a documentação interativa da API:
 
----
+    http://localhost:3000/api-docs
 
-### US3 — Buscar grupo por ID
+## Autenticação
 
-Como usuário da API
-Quero buscar um grupo específico
+A API utiliza autenticação via JWT.
 
-Critérios de aceitação:
+### Login
 
-* Retornar dados completos
-* Retornar 200 OK quando existir
-* Retornar 404 Not Found quando não existir
+Endpoint:
 
----
+    POST /login
 
-### US4 — Atualizar grupo
+Body:
 
-Como administrador
-Quero atualizar informações de um grupo
+``` json
+{
+  "username": "admin",
+  "password": "123"
+}
+```
 
-Critérios de aceitação:
+Resposta:
 
-* Permitir atualizar nome, agência e ano de debut
-* Não permitir duplicação de nome
-* Retornar 200 OK
-* Retornar 404 Not Found se não existir
+``` json
+{
+  "ok": true,
+  "token": "SEU_TOKEN_AQUI"
+}
+```
 
----
+### Como usar o token
 
-### US5 — Remover grupo
+Nas requisições protegidas, adicione no header:
 
-Como administrador
-Quero remover um grupo
+    Authorization: Bearer SEU_TOKEN_AQUI
 
-Critérios de aceitação:
+## Endpoints disponíveis
 
-* Remover pelo ID
-* Retornar 204 No Content
-* Retornar 404 Not Found se não existir
+Criar grupo:
 
----
+    POST /api/groups
 
-### US6 — Validação de dados
+Listar grupos:
 
-Como sistema
-Quero validar os dados de entrada
+    GET /api/groups
 
-Critérios de aceitação:
+Buscar grupo por ID:
 
-* Nome obrigatório
-* Ano de debut deve ser numérico
-* Agência não pode ser vazia
-* Retornar 400 Bad Request
+    GET /api/groups/{id}
 
----
+Atualizar grupo:
 
-### US7 — Controle de acesso (opcional)
+    PUT /api/groups/{id}
 
-Como administrador
-Quero proteger endpoints sensíveis
+Deletar grupo:
 
-Critérios de aceitação:
+    DELETE /api/groups/{id}
 
-* Apenas usuários autenticados podem criar/editar/remover
-* Retornar 401 Unauthorized
-* Retornar 403 Forbidden
+## Exemplo de Body (POST/PUT)
 
----
+``` json
+{
+  "name": "NEW JEANS",
+  "fandom": "Bunnies",
+  "debutYear": 2022
+}
+```
 
-## Endpoints (planejados)
+## Objetivo do projeto
 
-| Método | Endpoint    | Descrição       |
-| ------ | ----------- | --------------- |
-| POST   | /groups     | Criar grupo     |
-| GET    | /groups     | Listar grupos   |
-| GET    | /groups/:id | Buscar por ID   |
-| PUT    | /groups/:id | Atualizar grupo |
-| DELETE | /groups/:id | Remover grupo   |
+Este projeto foi desenvolvido com o objetivo de praticar:
 
----
+-   Criação de API REST
+-   Organização em camadas (routes, controllers, services)
+-   Autenticação com JWT
+-   Documentação com Swagger
+-   Boas práticas de desenvolvimento backend
 
-## Status do Projeto
+## Autora
 
-Em desenvolvimento
-POST /groups implementado
-
-Próximos passos:
-
-* Validação de dados
-* Listagem de grupos
-* Testes automatizados
-* Documentação com Swagger
-
----
+Claudia de Oliveira Mangueira
 
 ## Observações
 
-Os dados são armazenados em memória (sem banco de dados externo), com foco em aprendizado de arquitetura, testes e APIs REST.
+-   Os dados são armazenados em memória (sem banco de dados)
+-   Projeto voltado para fins de estudo e portfólio

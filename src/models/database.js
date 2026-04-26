@@ -1,17 +1,22 @@
-const groups = [];
 let currentId = 1;
 
+const groups = [
+  {
+    id: currentId++,
+    name: "BTS",
+    fandom: "ARMY",
+    debutYear: 2013
+  },
+  {
+    id: currentId++,
+    name: "BLACKPINK",
+    fandom: "BLINK",
+    debutYear: 2016
+  }
+];
+
 function getNextId() {
-    return currentId++;
+  return currentId++;
 }
 
-function resetDatabase() {
-    groups.length = 0;
-    currentId = 1;
-}
-
-module.exports = {
-    groups,
-    getNextId,
-    resetDatabase
-}; 
+module.exports = { groups, getNextId };
