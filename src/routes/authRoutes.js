@@ -4,6 +4,27 @@ const jwt = require('jsonwebtoken');
 
 const JWT_SECRET = "kpop-secret-key";
 
+/**
+ * @swagger
+ * /login:
+ *   post:
+ *     summary: Login do usuário
+ *     tags: [Auth]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               username:
+ *                 type: string
+ *               password:
+ *                 type: string
+ *     responses:
+ *       200:
+ *         description: Token gerado
+ */
 router.post('/login', (req, res) => {
   const { username, password } = req.body;
 

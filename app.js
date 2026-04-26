@@ -9,6 +9,10 @@ const groupRoutes = require('./src/routes/groupRoutes');
 app.use('/api', groupRoutes);
 app.use('/', authRoutes);
 
+const { swaggerUi, swaggerSpec } = require('./src/docs/swagger');
+
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+
 app.listen(3000, () => {
   console.log("Servidor rodando na porta 3000");
 });

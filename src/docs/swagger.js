@@ -1,41 +1,37 @@
+const swaggerJSDoc = require('swagger-jsdoc');
 const swaggerUi = require('swagger-ui-express');
 
-const swaggerDocument = {
-  openapi: "3.0.0",
+const swaggerDefinition = {
+  openapi: '3.0.0',
   info: {
-    title: "K-pop API",
-    version: "1.0.0"
+    title: 'Kpop API',
+    version: '1.0.0',
+    description: 'API de grupos de K-pop com autenticação JWT'
   },
   servers: [
     {
-      url: "http://localhost:3000/api"
+      url: 'http://localhost:3000'
     }
   ],
-  paths: {
-    "/groups": {
-      get: {
-        summary: "Listar grupos",
-        responses: {
-          200: { description: "OK" }
-        }
-      }
-    },
-    "/groups/{id}": {
-      get: {
-        summary: "Buscar grupo por ID",
-        parameters: [
-          {
-            name: "id",
-            in: "path",
-            required: true
-          }
-        ],
-        responses: {
-          200: { description: "OK" }
-        }
+  components: {
+    securitySchemes: {
+      bearerAuth: {
+        type: 'http',
+        scheme: 'bearer',
+        bearerFormat: 'JWT'
       }
     }
   }
 };
 
-module.exports = { swaggerUi, swaggerDocument };
+const options = {
+  swaggerDefinition,
+  apis: ['./src/routes/*.js']
+};
+
+const swaggerSpec = swaggerJSDoc(options);
+
+module.exports = {
+  swaggerUi,
+  swaggerSpec
+};
