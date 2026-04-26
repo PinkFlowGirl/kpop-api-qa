@@ -4,8 +4,7 @@ const swaggerDocument = {
   openapi: "3.0.0",
   info: {
     title: "K-pop API",
-    version: "1.0.0",
-    description: "API de grupos de K-pop"
+    version: "1.0.0"
   },
   servers: [
     {
@@ -17,9 +16,7 @@ const swaggerDocument = {
       get: {
         summary: "Listar grupos",
         responses: {
-          200: {
-            description: "OK"
-          }
+          200: { description: "OK" }
         }
       }
     },
@@ -34,9 +31,7 @@ const swaggerDocument = {
           }
         ],
         responses: {
-          200: {
-            description: "OK"
-          }
+          200: { description: "OK" }
         }
       }
     }

@@ -1,15 +1,24 @@
 const express = require('express');
 const router = express.Router();
+const authMiddleware = require('../middlewares/authMiddleware');
 
-const groupController = require('../controllers/groupController');
+const groups = [
+  { id: 1, name: 'BTS' },
+  { id: 2, name: 'BLACKPINK' }
+];
 
-// Criar grupo
-router.post('/groups', groupController.createGroup);
+router.get('/groups', authMiddleware, (req, res) => {
+  res.json(groups);
+});
 
-// (opcional) listar grupos
-router.get('/groups', groupController.getAllGroups);
+router.get('/groups/:id', authMiddleware, (req, res) => {
+  const group = groups.find(g => g.id == req.params.id);
 
-//
-router.get('/groups/:id', groupController.getGroupById);
+  if (!group) {
+    return res.status(404).json({ message: 'Grupo não encontrado' });
+  }
+
+  res.json(group);
+});
 
 module.exports = router;

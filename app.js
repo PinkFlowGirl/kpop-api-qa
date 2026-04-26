@@ -3,13 +3,12 @@ const app = express();
 
 app.use(express.json());
 
+const authRoutes = require('./src/routes/authRoutes');
 const groupRoutes = require('./src/routes/groupRoutes');
 
 app.use('/api', groupRoutes);
-
-const { swaggerUi, swaggerDocument } = require('./src/docs/swagger');
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+app.use('/', authRoutes);
 
 app.listen(3000, () => {
-  console.log('Servidor rodando');
+  console.log("Servidor rodando na porta 3000");
 });
