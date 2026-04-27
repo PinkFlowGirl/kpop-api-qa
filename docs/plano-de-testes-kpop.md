@@ -1,228 +1,184 @@
-# Plano de Testes — API de Grupos de K-Pop
+# PLANO DE TESTE – KPOP API
 
-## Objetivo
+## 1. Informações Gerais
 
-Validar o funcionamento da API REST de cadastro de grupos de K-Pop, garantindo que os endpoints atendam aos critérios de aceitação definidos nas user stories.
-
----
-
-## Escopo
-
-Serão testados os seguintes endpoints:
-
-* POST /groups
-* GET /groups
-* GET /groups/:id
-* PUT /groups/:id
-* DELETE /groups/:id
+Projeto: Kpop API REST
+Versão: v1.0.0
+Tipo: API REST
+Responsável: QA
+Ambiente: Local (localhost:3000)
+Ferramentas: Swagger UI, Postman, Curl, Node.js, GitHub
 
 ---
 
-## Ambiente de Teste
+## 2. Objetivo do Teste
 
-* **URL Base:** http://localhost:3000
-* **Banco de dados:** Em memória (resetar antes de cada teste)
-* **Formato:** JSON
+Validar o funcionamento da API REST de grupos de K-pop, garantindo:
 
----
-
-## Estratégia de Testes
-
-Os testes serão realizados em três níveis:
-
-* Testes funcionais (validação dos endpoints)
-* Testes de validação de dados
-* Testes de regras de negócio
-
-Ferramentas sugeridas:
-
-* Mocha
-* Supertest
-* Chai
+* Autenticação JWT funcionando corretamente
+* CRUD de grupos funcionando
+* Validação de dados correta
+* Respostas HTTP adequadas
+* Documentação Swagger funcional
+* Estabilidade da API
 
 ---
 
-## Dados de Teste (Fixtures)
+## 3. Escopo
 
-```javascript
-const groups = [
-  { name: "BLACKPINK", company: "YG", debutYear: 2016 },
-  { name: "BTS", company: "BigHit", debutYear: 2013 },
-  { name: "TWICE", company: "JYP", debutYear: 2015 }
-];
-```
+### Incluído:
 
----
+* Login de usuário (/auth/login)
+* CRUD de grupos (/api/groups)
+* Middleware de autenticação JWT
+* Swagger UI
+* Validação de payload
 
-## Casos de Teste
+### Excluído:
 
-### CT01 — Criar grupo com sucesso
-
-**Endpoint:** POST /groups
-**Entrada:**
-
-```json
-{
-  "name": "BLACKPINK",
-  "company": "YG",
-  "debutYear": 2016
-}
-```
-
-**Resultado esperado:**
-
-* Status 201
-* Retorno com ID gerado
-* Dados corretos no response
+* Banco de dados real (dados em memória)
+* Frontend
+* Deploy em nuvem
 
 ---
 
-### CT02 — Criar grupo com nome duplicado
+## 4. Funcionalidades a serem testadas
 
-**Pré-condição:** grupo já cadastrado
+### Autenticação
 
-**Entrada:**
+* Login válido
+* Login inválido
+* Geração de token JWT
+* Uso do token em rotas protegidas
 
-```json
-{
-  "name": "BLACKPINK",
-  "company": "YG",
-  "debutYear": 2016
-}
-```
+### CRUD de Groups
 
-**Resultado esperado:**
+* Criar grupo
+* Listar grupos
+* Buscar grupo por ID
+* Atualizar grupo
+* Deletar grupo
 
-* Status 400
-* Mensagem de erro indicando duplicidade
+### Swagger
 
----
+* Acesso ao Swagger UI
+* Documentação dos endpoints
+* Execução via Swagger
 
-### CT03 — Criar grupo com dados inválidos
+### Validação
 
-**Entrada:**
-
-```json
-{
-  "name": "",
-  "company": "",
-  "debutYear": "abc"
-}
-```
-
-**Resultado esperado:**
-
-* Status 400
-* Mensagens de validação
+* Campos obrigatórios (name, debutYear, fandom)
+* Body vazio
+* Tipos inválidos
 
 ---
 
-### CT04 — Listar grupos
+## 5. Tipos de Teste
 
-**Endpoint:** GET /groups
+### Testes Funcionais
 
-**Resultado esperado:**
+Verificar se cada endpoint funciona corretamente
 
-* Status 200
-* Lista de grupos
+### Testes Negativos
 
----
+* Dados inválidos
+* Token inválido
+* Body vazio
 
-### CT05 — Listar grupos vazio
+### Testes de Integração
 
-**Pré-condição:** banco sem dados
+* Login → token → acesso a CRUD
 
-**Resultado esperado:**
+### Testes de Segurança (básico)
 
-* Status 200
-* Lista vazia []
+* Acesso sem token
+* Token inválido
 
----
+### Testes Exploratórios
 
-### CT06 — Buscar grupo por ID existente
+* Entradas inesperadas
+* Payloads quebrados
+* Rotas inexistentes
 
-**Endpoint:** GET /groups/:id
+### Testes de API (manual)
 
-**Resultado esperado:**
-
-* Status 200
-* Dados do grupo
-
----
-
-### CT07 — Buscar grupo por ID inexistente
-
-**Resultado esperado:**
-
-* Status 404
+* Swagger
+* Postman
+* Curl
 
 ---
 
-### CT08 — Atualizar grupo com sucesso
+## 6. Cenários de Teste
 
-**Endpoint:** PUT /groups/:id
+### Login
 
-**Resultado esperado:**
+CT01: Login válido retorna token
+CT02: Login inválido retorna 401
 
-* Status 200
-* Dados atualizados
+### Groups
 
----
+CT03: Criar grupo com dados válidos
+CT04: Criar grupo sem campos obrigatórios
+CT05: Listar grupos com token válido
+CT06: Buscar grupo por ID válido
+CT07: Buscar grupo inexistente (404)
+CT08: Atualizar grupo válido
+CT09: Deletar grupo válido
 
-### CT09 — Atualizar grupo inexistente
+### Segurança
 
-**Resultado esperado:**
+CT10: Acesso sem token retorna 401
+CT11: Token inválido retorna 401
 
-* Status 404
+### Swagger
 
----
-
-### CT10 — Deletar grupo com sucesso
-
-**Endpoint:** DELETE /groups/:id
-
-**Resultado esperado:**
-
-* Status 204
-
----
-
-### CT11 — Deletar grupo inexistente
-
-**Resultado esperado:**
-
-* Status 404
+CT12: Swagger abre corretamente
+CT13: Executar requisição via Swagger funciona
 
 ---
 
-## Critérios de Aceite
+## 7. Critérios de Aceitação
 
-* Todos os endpoints retornam os status corretos
-* Regras de negócio são respeitadas
-* Validações impedem dados inválidos
-* Testes automatizados passam com sucesso
+A API será considerada aprovada se:
 
----
-
-## Cobertura de Testes
-
-| Caso de Teste | Endpoint | Método | Status | Observações |
-|---------------|----------|--------|--------|-------------|
-| CT01 | POST /groups | POST | - | Pendente |
-| CT02 | POST /groups | POST | - | Pendente |
-| CT03 | POST /groups | POST | - | Pendente |
-| CT04 | GET /groups | GET | - | Pendente |
-| CT05 | GET /groups | GET | - | Pendente |
-| CT06 | GET /groups/:id | GET | - | Pendente |
-| CT07 | GET /groups/:id | GET | - | Pendente |
-| CT08 | PUT /groups/:id | PUT | - | Pendente |
-| CT09 | PUT /groups/:id | PUT | - | Pendente |
-| CT10 | DELETE /groups/:id | DELETE | - | Pendente |
-| CT11 | DELETE /groups/:id | DELETE | - | Pendente |
+* Todos endpoints retornarem status correto
+* CRUD funcionar sem erro
+* JWT proteger rotas corretamente
+* Swagger funcionar sem falhas
+* Validações impedirem dados inválidos
 
 ---
 
-## Observações
+## 8. Critérios de Falha
 
-* O banco de dados é em memória e deve ser resetado antes de cada teste
-* Utilizar fixtures para dados de teste
+Será considerado bug se:
+
+* Rota não existir
+* Retorno 500 inesperado
+* Autenticação falhar indevidamente
+* Dados inválidos forem aceitos
+* Swagger não executar endpoints
+
+---
+
+## 9. Estratégia de Execução
+
+1. Login
+2. Capturar token
+3. Criar grupo
+4. Listar grupos
+5. Buscar por ID
+6. Atualizar
+7. Deletar
+8. Testes negativos
+9. Swagger validation
+10. Exploratório
+
+---
+
+## 10. Observações
+
+* API não usa banco real (dados em memória)
+* Reiniciar servidor limpa dados
+* Swagger é ferramenta principal de validação
+* JWT é obrigatório para CRUD
