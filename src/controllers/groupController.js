@@ -1,52 +1,99 @@
-const groupService = require('../services/groupService');
+let groups = [];
+let id = 1;
 
-function createGroup(req, res) {
-  try {
-    const group = groupService.createGroup(req.body);
-    res.status(201).json(group);
-  } catch (error) {
-    res.status(400).json({ error: error.message });
+/**
+ * Criar grupo
+ */
+exports.createGroup = (req, res) => {
+  const body = req.body;
+
+  // segurança contra body vazio
+  if (!body) {
+    return res.status(400).json({
+      message: "Body não enviado"
+    });
   }
-}
 
-function getAllGroups(req, res) {
-  res.json(groupService.getAllGroups());
-}
+  const { name, debutYear, fandom } = body;
 
-function getGroupById(req, res) {
-  const group = groupService.getGroupById(req.params.id);
+  // validação obrigatória
+  if (!name || !debutYear || !fandom) {
+    return res.status(400).json({
+      message: "name, debutYear e fandom são obrigatórios"
+    });
+  }
+
+  const newGroup = {
+    id: id++,
+    name,
+    debutYear,
+    fandom
+  };
+
+  groups.push(newGroup);
+
+  return res.status(201).json(newGroup);
+};
+
+/**
+ * Listar todos os grupos
+ */
+exports.getAllGroups = (req, res) => {
+  return res.json(groups);
+};
+
+/**
+ * Buscar grupo por ID
+ */
+exports.getGroupById = (req, res) => {
+  const group = groups.find(g => g.id == req.params.id);
 
   if (!group) {
-    return res.status(404).json({ error: "Grupo não encontrado" });
+    return res.status(404).json({
+      message: "Grupo não encontrado"
+    });
   }
 
-  res.json(group);
-}
+  return res.json(group);
+};
 
-function updateGroup(req, res) {
-  const updated = groupService.update(req.params.id, req.body);
+/**
+ * Atualizar grupo
+ */
+exports.updateGroup = (req, res) => {
+  const group = groups.find(g => g.id == req.params.id);
 
-  if (!updated) {
-    return res.status(404).json({ error: "Grupo não encontrado" });
+  if (!group) {
+    return res.status(404).json({
+      message: "Grupo não encontrado"
+    });
   }
 
-  res.json(updated);
-}
+  const { name, debutYear, fandom } = req.body;
 
-function deleteGroup(req, res) {
-  const removed = groupService.remove(req.params.id);
+  if (name) group.name = name;
+  if (debutYear) group.debutYear = debutYear;
+  if (fandom) group.fandom = fandom;
 
-  if (!removed) {
-    return res.status(404).json({ error: "Grupo não encontrado" });
+  return res.json(group);
+};
+
+/**
+ * Deletar grupo
+ */
+exports.deleteGroup = (req, res) => {
+  const index = groups.findIndex(g => g.id == req.params.id);
+
+  if (index === -1) {
+    return res.status(404).json({
+      message: "Grupo não encontrado"
+    });
   }
 
-  res.status(204).send();
-}
+  const deleted = groups.splice(index, 1);
 
-module.exports = {
-  createGroup,
-  getAllGroups,
-  getGroupById,
-  updateGroup,
-  deleteGroup
+  return res.json({
+    message: "Grupo removido",
+    group: deleted[0]
+  });
 };

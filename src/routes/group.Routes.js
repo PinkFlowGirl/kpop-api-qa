@@ -7,8 +7,28 @@ const groupController = require('../controllers/groupController');
  * @swagger
  * /api/groups:
  *   post:
- *     summary: Cria grupo
+ *     summary: Criar grupo de K-pop
  *     tags: [Groups]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - name
+ *               - debutYear
+ *               - fandom
+ *             properties:
+ *               name:
+ *                 type: string
+ *                 example: NEW JEANS
+ *               debutYear:
+ *                 type: number
+ *                 example: 2022
+ *               fandom:
+ *                 type: string
+ *                 example: Bunnies
  */
 router.post('/groups', authMiddleware, groupController.createGroup);
 
@@ -25,7 +45,7 @@ router.get('/groups', authMiddleware, groupController.getAllGroups);
  * @swagger
  * /api/groups/{id}:
  *   get:
- *     summary: Busca grupo
+ *     summary: Busca grupo por ID
  *     tags: [Groups]
  */
 router.get('/groups/:id', authMiddleware, groupController.getGroupById);
