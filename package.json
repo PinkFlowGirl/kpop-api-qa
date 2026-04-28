@@ -3,9 +3,9 @@
   "version": "1.0.0",
   "main": "app.js",
   "scripts": {
-    "test": "mocha",
+    "test": "mocha test/**/*.js",
     "start": "node app.js"
-  },
+      },
   "keywords": [],
   "author": "",
   "license": "ISC",
