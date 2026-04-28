@@ -7,13 +7,15 @@ const options = {
     info: {
       title: 'Kpop API',
       version: '1.0.0',
-      description: 'API de grupos de K-pop'
+      description: 'API de grupos de K-pop com autenticação JWT e CRUD'
     },
+
     servers: [
       {
         url: 'http://localhost:3000'
       }
     ],
+
     components: {
       securitySchemes: {
         bearerAuth: {
@@ -22,9 +24,16 @@ const options = {
           bearerFormat: 'JWT'
         }
       }
-    }
+    },
+
+    security: [
+      {
+        bearerAuth: []
+      }
+    ]
   },
-  apis: ['./src/routes/*.js']
+
+ apis: ['./src/**/*.js']
 };
 
 const swaggerSpec = swaggerJsdoc(options);
