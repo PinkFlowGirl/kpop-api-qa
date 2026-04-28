@@ -8,7 +8,9 @@ function authMiddleware(req, res, next) {
     return res.status(401).json({ message: "Token não informado" });
   }
 
-  const token = authHeader.split(' ')[1];
+const token = authHeader.startsWith('Bearer ')
+  ? authHeader.split(' ')[1]
+  : authHeader;
 
   try {
     jwt.verify(token, JWT_SECRET);
