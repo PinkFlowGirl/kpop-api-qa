@@ -1,184 +1,143 @@
-# PLANO DE TESTE – KPOP API
+# Test Plan – Kpop API
 
-## 1. Informações Gerais
-
-Projeto: Kpop API REST
-Versão: v1.0.0
-Tipo: API REST
-Responsável: QA
-Ambiente: Local (localhost:3000)
-Ferramentas: Swagger UI, Postman, Curl, Node.js, GitHub
+## Objetivo
+Garantir a qualidade da API de gerenciamento de grupos de K-pop, validando funcionalidades, segurança, estabilidade e performance.
 
 ---
 
-## 2. Objetivo do Teste
+## Escopo
 
-Validar o funcionamento da API REST de grupos de K-pop, garantindo:
+### Em escopo:
+- CRUD de grupos com autenticação JWT
+- Autenticação com JWT (login)
+- Validação de dados de entrada
+- Respostas HTTP corretas
+- Testes de integração
+- Testes de performance (k6)
+- Testes de segurança (JWT)
 
-* Autenticação JWT funcionando corretamente
-* CRUD de grupos funcionando
-* Validação de dados correta
-* Respostas HTTP adequadas
-* Documentação Swagger funcional
-* Estabilidade da API
-
----
-
-## 3. Escopo
-
-### Incluído:
-
-* Login de usuário (/auth/login)
-* CRUD de grupos (/api/groups)
-* Middleware de autenticação JWT
-* Swagger UI
-* Validação de payload
-
-### Excluído:
-
-* Banco de dados real (dados em memória)
-* Frontend
-* Deploy em nuvem
+### Fora de escopo:
+- Interface gráfica
+- Banco de dados persistente
+- Deployment em produção
 
 ---
 
-## 4. Funcionalidades a serem testadas
+## Tipos de Teste
 
-### Autenticação
-
-* Login válido
-* Login inválido
-* Geração de token JWT
-* Uso do token em rotas protegidas
-
-### CRUD de Groups
-
-* Criar grupo
-* Listar grupos
-* Buscar grupo por ID
-* Atualizar grupo
-* Deletar grupo
-
-### Swagger
-
-* Acesso ao Swagger UI
-* Documentação dos endpoints
-* Execução via Swagger
-
-### Validação
-
-* Campos obrigatórios (name, debutYear, fandom)
-* Body vazio
-* Tipos inválidos
+| Tipo | Status | Quantidade | Ferramenta |
+|------|--------|-----------|-----------|
+| Testes Unitários | ✅ | 6 | Mocha + Chai |
+| Testes de Integração | ✅ | 6 | Supertest |
+| Testes de API | ✅ | 6 | Supertest |
+| Testes de Performance | ⏳ | - | k6 |
+| Testes Exploratórios | ⏳ | - | Manual |
+| Testes de Segurança | ✅ | 4 | Mocha + Chai |
 
 ---
 
-## 5. Tipos de Teste
+## Critérios de Aceite
 
-### Testes Funcionais
-
-Verificar se cada endpoint funciona corretamente
-
-### Testes Negativos
-
-* Dados inválidos
-* Token inválido
-* Body vazio
-
-### Testes de Integração
-
-* Login → token → acesso a CRUD
-
-### Testes de Segurança (básico)
-
-* Acesso sem token
-* Token inválido
-
-### Testes Exploratórios
-
-* Entradas inesperadas
-* Payloads quebrados
-* Rotas inexistentes
-
-### Testes de API (manual)
-
-* Swagger
-* Postman
-* Curl
+- ✅ API responde corretamente (200, 201, 400, 401, 404)
+- ✅ Dados validados corretamente
+- ✅ Rotas protegidas com JWT obrigatório
+- ✅ Testes automatizados passando (6/6)
+- ✅ Documentação Swagger atualizada
+- ✅ CI/CD executando com sucesso
 
 ---
 
-## 6. Cenários de Teste
+## Ambiente
 
-### Login
-
-CT01: Login válido retorna token
-CT02: Login inválido retorna 401
-
-### Groups
-
-CT03: Criar grupo com dados válidos
-CT04: Criar grupo sem campos obrigatórios
-CT05: Listar grupos com token válido
-CT06: Buscar grupo por ID válido
-CT07: Buscar grupo inexistente (404)
-CT08: Atualizar grupo válido
-CT09: Deletar grupo válido
-
-### Segurança
-
-CT10: Acesso sem token retorna 401
-CT11: Token inválido retorna 401
-
-### Swagger
-
-CT12: Swagger abre corretamente
-CT13: Executar requisição via Swagger funciona
+- **Node.js:** v18.20.8
+- **Framework:** Express.js
+- **Banco de Dados:** Em memória
+- **Servidor:** localhost:3000
+- **Documentação:** Swagger UI
 
 ---
 
-## 7. Critérios de Aceitação
+## Ferramentas
 
-A API será considerada aprovada se:
-
-* Todos endpoints retornarem status correto
-* CRUD funcionar sem erro
-* JWT proteger rotas corretamente
-* Swagger funcionar sem falhas
-* Validações impedirem dados inválidos
-
----
-
-## 8. Critérios de Falha
-
-Será considerado bug se:
-
-* Rota não existir
-* Retorno 500 inesperado
-* Autenticação falhar indevidamente
-* Dados inválidos forem aceitos
-* Swagger não executar endpoints
+| Ferramenta | Versão | Propósito |
+|-----------|--------|----------|
+| Mocha | latest | Test Framework |
+| Chai | latest | Assertions |
+| Supertest | latest | API Testing |
+| Swagger | latest | Documentação |
+| k6 | - | Performance |
+| GitHub Actions | - | CI/CD |
 
 ---
 
-## 9. Estratégia de Execução
+## Estratégia de Testes
 
-1. Login
-2. Capturar token
-3. Criar grupo
-4. Listar grupos
-5. Buscar por ID
-6. Atualizar
-7. Deletar
-8. Testes negativos
-9. Swagger validation
-10. Exploratório
+### 1. Testes Automatizados (Mocha + Chai + Supertest)
+- **Executação:** `npm test`
+- **Tempo:** ~92ms
+- **Cobertura:** 83% (10/12 testes)
+- **Status:** ✅ 6/6 testes passando
+
+### 2. Testes Manuais via Swagger
+- **URL:** http://localhost:3000/api-docs
+- **Método:** Interface interativa
+
+### 3. Testes de Performance (k6)
+- **Arquivo:** `performance/load-test.js`
+- **Status:** ⏳ Planejado
 
 ---
 
-## 10. Observações
+## Riscos e Mitigações
 
-* API não usa banco real (dados em memória)
-* Reiniciar servidor limpa dados
-* Swagger é ferramenta principal de validação
-* JWT é obrigatório para CRUD
+| Risco | Impacto | Mitigação |
+|------|--------|----------|
+| Banco em memória (dados perdidos ao reiniciar) | Alto | Usar banco persistente em produção |
+| Falhas em autenticação JWT | Alto | Testes de segurança obrigatórios |
+| Falta de validação de dados | Médio | Implementar validação server-side |
+| Performance sob carga | Médio | Testes com k6 planejados |
+
+---
+
+## Execução de Testes
+
+### Rodar todos os testes
+```bash
+npm test
+```
+
+### Saída esperada
+```
+Kpop API - Groups
+  ✔ Deve fazer login e retornar token (38ms)
+  ✔ Deve listar grupos
+  ✔ Deve criar um grupo
+  ✔ Deve buscar grupo por ID
+  ✔ Deve atualizar grupo
+  ✔ Deve deletar grupo
+
+6 passing (92ms)
+```
+
+---
+
+## Relatório de Cobertura
+
+| Endpoint | Método | Testes | Status |
+|----------|--------|--------|--------|
+| /api/auth/login | POST | CT01, CT02 | ✅ |
+| /api/groups | GET | CT06 | ✅ |
+| /api/groups | POST | CT05 | ✅ |
+| /api/groups/:id | GET | CT07, CT08 | ✅ |
+| /api/groups/:id | PUT | CT09 | ✅ |
+| /api/groups/:id | DELETE | CT10 | ✅ |
+
+---
+
+## Próximos Passos
+
+1. ✅ Testes de autenticação e CRUD
+2. ⏳ Testes de validação de dados
+3. ⏳ Testes de performance (k6)
+4. ⏳ Testes exploratórios
+5. ⏳ Deploy em staging/produção

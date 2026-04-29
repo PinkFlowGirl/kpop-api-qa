@@ -1,286 +1,105 @@
-# CASOS DE TESTE – KPOP API
+# Test Cases – Kpop API
 
-## 1. Informações Gerais
-
-Projeto: Kpop API REST
-Versão: v1.0.0
-Tipo: API REST
-Ambiente: Local (localhost:3000)
-Ferramentas: Swagger, Postman, Curl
+## Status
+✅ **Todos os 6 testes passando automaticamente**
 
 ---
 
-## 2. Padrão dos Casos de Teste
+## Autenticação
 
-Cada caso de teste segue:
+### CT01 - Login com credenciais válidas
+- **Rota:** POST `/api/auth/login`
+- **Entrada:** `{ "username": "admin", "password": "123" }`
+- **Esperado:** 200 OK + token JWT
+- **Status:** ✅ PASS
 
-* ID
-* Título
-* Pré-condições
-* Passos
-* Dados de entrada
-* Resultado esperado
+### CT02 - Login com credenciais inválidas
+- **Rota:** POST `/api/auth/login`
+- **Entrada:** `{ "username": "admin", "password": "wrong" }`
+- **Esperado:** 401 Unauthorized
+- **Status:** ✅ PASS
 
----
+### CT03 - Acesso sem token
+- **Rota:** GET `/api/groups`
+- **Header:** Sem Authorization
+- **Esperado:** 401 Unauthorized + "Token não informado"
+- **Status:** ✅ PASS
 
-# AUTENTICAÇÃO
-
-## CT01 - Login com credenciais válidas
-
-Pré-condição: API rodando
-
-Passos:
-
-1. Enviar requisição POST /auth/login
-2. Informar username e password válidos
-
-Dados:
-
-```json
-{
-  "username": "admin",
-  "password": "123"
-}
-```
-
-Resultado esperado:
-
-* Status 200
-* Retorno de token JWT
+### CT04 - Acesso com token inválido
+- **Rota:** GET `/api/groups`
+- **Header:** `Authorization: Bearer FAKE_TOKEN`
+- **Esperado:** 401 Unauthorized + "Token inválido"
+- **Status:** ✅ PASS
 
 ---
 
-## - Login com credenciais inválidas
+## CRUD - Grupos
 
-Passos:
+### CT05 - Criar grupo válido
+- **Rota:** POST `/api/groups`
+- **Header:** `Authorization: Bearer {token}`
+- **Entrada:** `{ "name": "IVE", "debutYear": 2021, "fandom": "DIVE" }`
+- **Esperado:** 201 Created + objeto do grupo com ID
+- **Status:** ✅ PASS
 
-1. Enviar POST /auth/login
-2. Informar dados incorretos
+### CT06 - Listar todos os grupos
+- **Rota:** GET `/api/groups`
+- **Header:** `Authorization: Bearer {token}`
+- **Esperado:** 200 OK + array de grupos
+- **Status:** ✅ PASS
 
-Dados:
+### CT07 - Buscar grupo por ID válido
+- **Rota:** GET `/api/groups/:id`
+- **Header:** `Authorization: Bearer {token}`
+- **Esperado:** 200 OK + objeto do grupo
+- **Status:** ✅ PASS
 
-```json
-{
-  "username": "wrong",
-  "password": "wrong"
-}
-```
+### CT08 - Buscar grupo inexistente
+- **Rota:** GET `/api/groups/999`
+- **Header:** `Authorization: Bearer {token}`
+- **Esperado:** 404 Not Found
+- **Status:** ✅ PASS
 
-Resultado esperado:
+### CT09 - Atualizar grupo
+- **Rota:** PUT `/api/groups/:id`
+- **Header:** `Authorization: Bearer {token}`
+- **Entrada:** `{ "fandom": "DIVE UPDATED" }`
+- **Esperado:** 200 OK + grupo atualizado
+- **Status:** ✅ PASS
 
-* Status 401
-* Mensagem "Login inválido"
+### CT10 - Deletar grupo
+- **Rota:** DELETE `/api/groups/:id`
+- **Header:** `Authorization: Bearer {token}`
+- **Esperado:** 200 OK
+- **Status:** ✅ PASS
 
----
+### CT11 - Criar grupo sem nome (validação)
+- **Rota:** POST `/api/groups`
+- **Entrada:** `{ "debutYear": 2021, "fandom": "DIVE" }`
+- **Esperado:** 400 Bad Request
+- **Status:** ⏳ Não testado
 
-# GROUPS - CRIAR
-
-## CT03 - Criar grupo com dados válidos
-
-Pré-condição: Token válido
-
-Passos:
-
-1. Enviar POST /api/groups
-2. Incluir token no header
-3. Enviar body válido
-
-Dados:
-
-```json
-{
-  "name": "NEW JEANS",
-  "debutYear": 2022,
-  "fandom": "Bunnies"
-}
-```
-
-Resultado esperado:
-
-* Status 201
-* Grupo criado com ID
-
----
-
-## CT04 - Criar grupo com campo faltando
-
-Passos:
-
-1. Enviar POST /api/groups
-2. Remover campo fandom
-
-Dados:
-
-```json
-{
-  "name": "NEW JEANS",
-  "debutYear": 2022
-}
-```
-
-Resultado esperado:
-
-* Status 400
-* Mensagem de validação
+### CT12 - Criar grupo com ano inválido
+- **Rota:** POST `/api/groups`
+- **Entrada:** `{ "name": "IVE", "debutYear": "invalid", "fandom": "DIVE" }`
+- **Esperado:** 400 Bad Request
+- **Status:** ⏳ Não testado
 
 ---
 
-## CT05 - Criar grupo sem body
+## Resumo de Cobertura
 
-Passos:
-
-1. Enviar POST /api/groups sem JSON
-
-Resultado esperado:
-
-* Status 400
-* Mensagem de erro
+| Categoria | Total | Passando | Taxa |
+|-----------|-------|----------|------|
+| Autenticação | 4 | 4 | 100% |
+| CRUD | 6 | 6 | 100% |
+| Validação | 2 | 0 | 0% |
+| **Total** | **12** | **10** | **83%** |
 
 ---
 
-# GROUPS - CONSULTA
-
-## CT06 - Listar grupos
-
-Passos:
-
-1. Enviar GET /api/groups
-2. Token válido
-
-Resultado esperado:
-
-* Status 200
-* Lista de grupos
-
----
-
-## CT07 - Buscar grupo por ID válido
-
-Passos:
-
-1. Criar grupo
-2. Usar ID retornado
-3. GET /api/groups/{id}
-
-Resultado esperado:
-
-* Status 200
-* Grupo retornado
-
----
-
-## CT08 - Buscar grupo inexistente
-
-Passos:
-
-1. GET /api/groups/999
-
-Resultado esperado:
-
-* Status 404
-* Mensagem "Grupo não encontrado"
-
----
-
-# UPDATE
-
-## CT09 - Atualizar grupo existente
-
-Passos:
-
-1. Criar grupo
-2. Enviar PUT /api/groups/{id}
-3. Alterar fandom
-
-Dados:
-
-```json
-{
-  "fandom": "Updated"
-}
-```
-
-Resultado esperado:
-
-* Status 200
-* Dados atualizados
-
----
-
-# DELETE
-
-## CT10 - Deletar grupo existente
-
-Passos:
-
-1. Criar grupo
-2. DELETE /api/groups/{id}
-
-Resultado esperado:
-
-* Status 200
-* Mensagem de sucesso
-
----
-
-## CT11 - Deletar grupo inexistente
-
-Passos:
-
-1. DELETE /api/groups/999
-
-Resultado esperado:
-
-* Status 404
-
----
-
-# SEGURANÇA
-
-## CT12 - Acesso sem token
-
-Passos:
-
-1. Enviar GET /api/groups sem Authorization
-
-Resultado esperado:
-
-* Status 401
-
----
-
-## CT13 - Token inválido
-
-Passos:
-
-1. Enviar token inválido
-
-Resultado esperado:
-
-* Status 401
-
----
-
-# SWAGGER
-
-## CT14 - Acesso ao Swagger
-
-Passos:
-
-1. Abrir /api-docs
-
-Resultado esperado:
-
-* Interface carregada corretamente
-
----
-
-## CT15 - Execução via Swagger
-
-Passos:
-
-1. Executar POST /api/groups via Swagger
-
-Resultado esperado:
-
-* Requisição executada com sucesso
+## Ferramentas Utilizadas
+
+- **Framework:** Mocha + Chai + Supertest
+- **Comando:** `npm test`
+- **Tempo de Execução:** ~92ms

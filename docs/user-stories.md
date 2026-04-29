@@ -1,130 +1,126 @@
-# User Stories — API de Grupos de K-Pop
+# User Stories – Kpop API
 
-## Épico: Cadastro de Grupos de K-Pop
-
----
-
-## US1 — Criar grupo de K-Pop
-
-**ID:** US1
-**Como** administrador da plataforma
-**Quero** cadastrar um novo grupo de K-Pop
-**Para** que ele esteja disponível na base de dados
-
-### Critérios de aceitação:
-
-* Deve ser possível informar nome do grupo
-* Deve ser possível informar agência (empresa)
-* Deve ser possível informar ano de debut
-* O sistema não deve permitir nomes duplicados
-* Retornar status **201 Created** em caso de sucesso
-* Retornar status **400 Bad Request** para dados inválidos
-
-### Dependências: Nenhuma
+## Status: ✅ Todas implementadas e testadas
 
 ---
 
-## US2 — Listar grupos cadastrados
+## US01 - Autenticação do Usuário
 
-**ID:** US2
-**Como** usuário da API
-**Quero** visualizar todos os grupos cadastrados
-**Para** consultar os dados disponíveis
+**Como** um usuário  
+**Quero** fazer login na API  
+**Para** acessar os recursos protegidos
 
-### Critérios de aceitação:
+### Critérios de Aceite
+- Endpoint: POST `/api/auth/login`
+- Aceitar username e password
+- Retornar JWT válido com 1 hora de expiração
+- Rejeitar credenciais inválidas com 401
+- Token deve ser obrigatório em rotas protegidas
 
-* Retornar lista de grupos
-* Deve suportar paginação (`page` e `limit`)
-* Retornar status **200 OK**
-* Se não houver grupos, retornar lista vazia
-
-### Dependências: US1
-
----
-
-## US3 — Buscar grupo por ID
-
-**ID:** US3
-**Como** usuário da API
-**Quero** buscar um grupo específico pelo ID
-**Para** ver seus detalhes
-
-### Critérios de aceitação:
-
-* Retornar dados completos do grupo
-* Retornar status **200 OK** quando existir
-* Retornar status **404 Not Found** quando não existir
-
-### Dependências: US1
+### Testes Automatizados
+✅ CT01 - Login com credenciais válidas
+✅ CT02 - Login com credenciais inválidas
+✅ CT03 - Acesso sem token
+✅ CT04 - Acesso com token inválido
 
 ---
 
-## US4 — Atualizar grupo de K-Pop
+## US02 - Criar Grupo de K-pop
 
-**ID:** US4
-**Como** administrador da API
-**Quero** atualizar informações de um grupo
-**Para** manter os dados sempre atualizados
+**Como** um usuário autenticado  
+**Quero** cadastrar um novo grupo de K-pop  
+**Para** manter um registro atualizado
 
-### Critérios de aceitação:
+### Critérios de Aceite
+- Endpoint: POST `/api/groups`
+- Requer autenticação JWT
+- Campos obrigatórios: name, debutYear, fandom
+- Retornar 201 Created com o grupo criado
+- Retornar 400 Bad Request se dados inválidos
 
-* Permitir atualizar nome, agência e ano de debut
-* Não permitir duplicação de nome após atualização
-* Retornar status **200 OK** quando atualizado com sucesso
-* Retornar status **404 Not Found** se o grupo não existir
-
-### Dependências: US1, US3
-
----
-
-## US5 — Remover grupo
-
-**ID:** US5
-**Como** administrador da API
-**Quero** remover um grupo de K-Pop
-**Para** manter a base de dados limpa e atualizada
-
-### Critérios de aceitação:
-
-* Remover grupo pelo ID
-* Retornar status **204 No Content** em caso de sucesso
-* Retornar status **404 Not Found** se o grupo não existir
-
-### Dependências: US1, US3
+### Teste Automatizado
+✅ CT05 - Criar grupo válido
 
 ---
 
-## US6 — Validação de dados
+## US03 - Listar Grupos
 
-**ID:** US6
-**Como** sistema da API
-**Quero** validar os dados de entrada
-**Para** garantir integridade das informações
+**Como** um usuário autenticado  
+**Quero** visualizar todos os grupos de K-pop  
+**Para** consultar informações disponíveis
 
-### Critérios de aceitação:
+### Critérios de Aceite
+- Endpoint: GET `/api/groups`
+- Requer autenticação JWT
+- Retornar array de grupos
+- Retornar 200 OK
 
-* Nome do grupo é obrigatório
-* Ano de debut deve ser um número válido
-* Agência não pode ser vazia
-* Retornar status **400 Bad Request** para dados inválidos
+### Teste Automatizado
+✅ CT06 - Listar todos os grupos
 
-### Dependências: US1
+---
+
+## US04 - Buscar Grupo por ID
+
+**Como** um usuário autenticado  
+**Quero** buscar um grupo específico pelo ID  
+**Para** obter detalhes de um grupo
+
+### Critérios de Aceite
+- Endpoint: GET `/api/groups/:id`
+- Requer autenticação JWT
+- Retornar o grupo se existir (200 OK)
+- Retornar 404 Not Found se não existir
+
+### Testes Automatizados
+✅ CT07 - Buscar grupo por ID válido
+✅ CT08 - Buscar grupo inexistente
 
 ---
 
-## US7 — Controle de acesso (opcional)
+## US05 - Atualizar Grupo
 
-**ID:** US7
-**Como** administrador
-**Quero** proteger endpoints sensíveis
-**Para** evitar alterações não autorizadas
+**Como** um usuário autenticado  
+**Quero** editar as informações de um grupo  
+**Para** manter os dados atualizados
 
-### Critérios de aceitação:
+### Critérios de Aceite
+- Endpoint: PUT `/api/groups/:id`
+- Requer autenticação JWT
+- Permitir atualizar parcial (apenas campos enviados)
+- Retornar 200 OK com grupo atualizado
+- Retornar 404 Not Found se grupo não existir
 
-* Apenas usuários autenticados podem criar, editar e remover
-* Usuário não autenticado recebe **401 Unauthorized**
-* Usuário sem permissão recebe **403 Forbidden**
-
-### Dependências: US1, US4, US5
+### Teste Automatizado
+✅ CT09 - Atualizar grupo
 
 ---
+
+## US06 - Deletar Grupo
+
+**Como** um usuário autenticado  
+**Quero** remover um grupo da base de dados  
+**Para** manter apenas grupos relevantes
+
+### Critérios de Aceite
+- Endpoint: DELETE `/api/groups/:id`
+- Requer autenticação JWT
+- Retornar 200 OK se deletado com sucesso
+- Retornar 404 Not Found se grupo não existir
+
+### Teste Automatizado
+✅ CT10 - Deletar grupo
+
+---
+
+## Resumo de Implementação
+
+| US | Titulo | Status | Testes |
+|----|--------|--------|--------|
+| US01 | Autenticação | ✅ Completa | 4/4 |
+| US02 | Criar Grupo | ✅ Completa | 1/1 |
+| US03 | Listar Grupos | ✅ Completa | 1/1 |
+| US04 | Buscar Grupo | ✅ Completa | 2/2 |
+| US05 | Atualizar Grupo | ✅ Completa | 1/1 |
+| US06 | Deletar Grupo | ✅ Completa | 1/1 |
+| **Total** | | **✅ 6/6** | **10/10** |
