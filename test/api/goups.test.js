@@ -10,7 +10,7 @@ describe('Kpop API - Groups', () => {
 
   it('Deve fazer login e retornar token', async () => {
     const res = await request(baseURL)
-      .post('/auth/login')
+      .post('/api/auth/login')
       .send({
         username: 'admin',
         password: '123'
