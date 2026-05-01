@@ -7,23 +7,23 @@
 
 ---
 
-## 📊 Resultados Executivos
+## Resultados Executivos
 
 ### Status Geral: ⚠️ PARCIALMENTE APROVADO
 
 **Métricas de Sucesso:**
-- ✅ **Latência de Autenticação:** p(99)=59.95ms (limite: 1000ms)
-- ✅ **Latência de Operações em Grupos:** p(95)=30.7ms (limite: 500ms)
-- ✅ **Latência de Requisições HTTP:** p(95)=28.53ms (limite: 500ms)
-- ✅ **Validações de Funcionalidade:** 100% (2719/2719 checks passados)
-- ✅ **Taxa de Erros:** 0%
+- **Latência de Autenticação:** p(99)=59.95ms (limite: 1000ms)
+- **Latência de Operações em Grupos:** p(95)=30.7ms (limite: 500ms)
+- **Latência de Requisições HTTP:** p(95)=28.53ms (limite: 500ms)
+- **Validações de Funcionalidade:** 100% (2719/2719 checks passados)
+- **Taxa de Erros:** 0%
 
 **Métricas com Alerta:**
-- ⚠️ **Taxa de Requisições Falhadas:** 49.97% (limite: 10%)
+-  **Taxa de Requisições Falhadas:** 49.97% (limite: 10%)
 
 ---
 
-## 📈 Análise Detalhada de Resultados
+## Análise Detalhada de Resultados
 
 ### 1. Latência (Performance)
 
@@ -63,7 +63,7 @@ Durante o estágio "spike" (aumento para 50 VUs simultâneos), o servidor está 
 
 ---
 
-## 🔍 Problemas Encontrados
+## Problemas Encontrados
 
 ### Problema 1: Alta Taxa de Requisições Falhadas
 **Severidade:** 🔴 Crítica  
@@ -83,7 +83,7 @@ Durante o estágio "spike" (aumento para 50 VUs simultâneos), o servidor está 
 
 ---
 
-## ✅ Validações Que Passaram
+## Validações Que Passaram
 
 Todos os testes funcionais passaram com 100% de sucesso:
 
@@ -102,7 +102,7 @@ Todos os testes funcionais passaram com 100% de sucesso:
 
 ---
 
-## 🚀 Recomendações de Upgrade
+## Recomendações de Upgrade
 
 ### Curto Prazo (Crítico)
 
@@ -210,9 +210,9 @@ docker run -p 3000:3000 kpop-api
 
 ---
 
-## 📋 Upgrade Imediato Recomendado
+## Upgrade Imediato Recomendado
 
-### Prioridade 1️⃣ (Implementar Agora)
+### Prioridade (Implementar Agora)
 
 ```javascript
 // 1. Adicionar middleware de erro global
@@ -233,7 +233,7 @@ const validateGroup = (name, debutYear, fandom) => {
 };
 ```
 
-### Prioridade 2️⃣ (Próximas 2 Semanas)
+### Prioridade (Próximas 2 Semanas)
 
 1. Migrar para MongoDB
 2. Adicionar índices no banco
@@ -242,27 +242,27 @@ const validateGroup = (name, debutYear, fandom) => {
 
 ---
 
-## 🎯 Conclusão
+## Conclusão
 
 **A API funciona bem em latência e funcionalidade, mas precisa de upgrades para lidar com carga.**
 
 | Aspecto | Status | Ação |
 |---------|--------|------|
-| **Latência** | ✅ Excelente | Manter |
-| **Funcionalidade** | ✅ 100% OK | Manter |
-| **Escalabilidade** | ❌ Falha em 50% de reqs | Urgente |
-| **Resiliência** | ⚠️ Sem tratamento de erro | Importante |
-| **Persistência** | ❌ Em-memory | Crítico para produção |
+| **Latência** | Excelente | Manter |
+| **Funcionalidade** | 100% OK | Manter |
+| **Escalabilidade** | Falha em 50% de reqs | Urgente |
+| **Resiliência** | Sem tratamento de erro | Importante |
+| **Persistência** | Em-memory | Crítico para produção |
 
 ---
 
-## 📝 Próximos Passos
+## Próximos Passos
 
-1. ✅ **Executado:** Teste de performance com k6
-2. 🔄 **Próximo:** Implementar rate limiting
-3. 🔄 **Próximo:** Adicionar tratamento de erros
-4. 🔄 **Próximo:** Migrar para MongoDB
-5. 🔄 **Próximo:** Executar teste de performance novamente
+1. **Executado:** Teste de performance com k6
+2. **Próximo:** Implementar rate limiting
+3. **Próximo:** Adicionar tratamento de erros
+4. **Próximo:** Migrar para MongoDB
+5. **Próximo:** Executar teste de performance novamente
 
 ---
 

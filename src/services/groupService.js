@@ -1,17 +1,39 @@
 const { groups, getNextId } = require('../models/database');
 
-function createGroup(data) {
-  const { name, fandom, debutYear } = data;
+function validateGroup(data) {
+  const { name, fandom, debutYear, generation, members } = data;
 
-  if (!name || !fandom || !debutYear) {
-    throw new Error("Dados obrigatórios");
+  if (!name || typeof name !== 'string') {
+    throw new Error('name é obrigatório e deve ser string');
   }
+
+  if (!fandom || typeof fandom !== 'string') {
+    throw new Error('fandom é obrigatório e deve ser string');
+  }
+
+  if (!debutYear || typeof debutYear !== 'number') {
+    throw new Error('debutYear deve ser número');
+  }
+
+  if (generation && typeof generation !== 'number') {
+    throw new Error('generation deve ser número');
+  }
+
+  if (members && !Array.isArray(members)) {
+    throw new Error('members deve ser um array de strings');
+  }
+}
+
+function createGroup(data) {
+  validateGroup(data);
 
   const newGroup = {
     id: getNextId(),
-    name,
-    fandom,
-    debutYear
+    name: data.name,
+    fandom: data.fandom,
+    debutYear: data.debutYear,
+    generation: data.generation || null,
+    members: data.members || []
   };
 
   groups.push(newGroup);
@@ -30,9 +52,10 @@ function update(id, data) {
   const group = getGroupById(id);
   if (!group) return null;
 
-  if (data.name) group.name = data.name;
-  if (data.fandom) group.fandom = data.fandom;
-  if (data.debutYear) group.debutYear = data.debutYear;
+  // valida só os campos enviados
+  validateGroup({ ...group, ...data });
+
+  Object.assign(group, data);
 
   return group;
 }
@@ -41,7 +64,10 @@ function remove(id) {
   const index = groups.findIndex(g => g.id === Number(id));
   if (index === -1) return null;
 
-  return groups.splice(index, 1);
+  const removed = groups[index];
+  groups.splice(index, 1);
+
+  return removed;
 }
 
 module.exports = {

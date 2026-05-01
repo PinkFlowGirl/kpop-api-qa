@@ -5,7 +5,14 @@ const groupController = require('../controllers/groupController');
 
 /**
  * @swagger
- * /api/groups:
+ * tags:
+ *   - name: Groups
+ *     description: CRUD de grupos de K-pop
+ */
+
+/**
+ * @swagger
+ * /groups:
  *   post:
  *     summary: Cria um novo grupo de K-pop
  *     tags: [Groups]
@@ -16,34 +23,32 @@ const groupController = require('../controllers/groupController');
  *       content:
  *         application/json:
  *           schema:
- *             type: object
- *             required:
- *               - name
- *               - debutYear
- *               - fandom
- *             properties:
- *               name:
- *                 type: string
- *                 example: IVE
- *               debutYear:
- *                 type: integer
- *                 example: 2021
- *               fandom:
- *                 type: string
- *                 example: DIVE
+ *             $ref: '#/components/schemas/GroupInput'
  *     responses:
  *       201:
  *         description: Grupo criado com sucesso
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Group'
  *       400:
  *         description: Dados inválidos
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/ErrorResponse'
  *       401:
- *         description: Não autorizado
+ *         description: Token não informado ou inválido
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/ErrorResponse'
  */
-router.post('/groups', authMiddleware, groupController.createGroup);
+router.post('/', authMiddleware, groupController.createGroup);
 
 /**
  * @swagger
- * /api/groups:
+ * /groups:
  *   get:
  *     summary: Lista todos os grupos
  *     tags: [Groups]
@@ -52,16 +57,26 @@ router.post('/groups', authMiddleware, groupController.createGroup);
  *     responses:
  *       200:
  *         description: Lista de grupos
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/Group'
  *       401:
- *         description: Não autorizado
+ *         description: Token não informado ou inválido
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/ErrorResponse'
  */
-router.get('/groups', authMiddleware, groupController.getAllGroups);
+router.get('/', authMiddleware, groupController.getAllGroups);
 
 /**
  * @swagger
- * /api/groups/{id}:
+ * /groups/{id}:
  *   get:
- *     summary: Busca grupo por ID
+ *     summary: Busca um grupo por ID
  *     tags: [Groups]
  *     security:
  *       - bearerAuth: []
@@ -75,16 +90,28 @@ router.get('/groups', authMiddleware, groupController.getAllGroups);
  *     responses:
  *       200:
  *         description: Grupo encontrado
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Group'
+ *       401:
+ *         description: Token não informado ou inválido
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/ErrorResponse'
  *       404:
  *         description: Grupo não encontrado
- *       401:
- *         description: Não autorizado
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/ErrorResponse'
  */
-router.get('/groups/:id', authMiddleware, groupController.getGroupById);
+router.get('/:id', authMiddleware, groupController.getGroupById);
 
 /**
  * @swagger
- * /api/groups/{id}:
+ * /groups/{id}:
  *   put:
  *     summary: Atualiza um grupo
  *     tags: [Groups]
@@ -102,30 +129,38 @@ router.get('/groups/:id', authMiddleware, groupController.getGroupById);
  *       content:
  *         application/json:
  *           schema:
- *             type: object
- *             properties:
- *               name:
- *                 type: string
- *                 example: IVE
- *               debutYear:
- *                 type: integer
- *                 example: 2021
- *               fandom:
- *                 type: string
- *                 example: DIVE UPDATED
+ *             $ref: '#/components/schemas/GroupInput'
  *     responses:
  *       200:
  *         description: Grupo atualizado
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Group'
+ *       400:
+ *         description: Dados inválidos
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/ErrorResponse'
+ *       401:
+ *         description: Token não informado ou inválido
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/ErrorResponse'
  *       404:
  *         description: Grupo não encontrado
- *       401:
- *         description: Não autorizado
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/ErrorResponse'
  */
-router.put('/groups/:id', authMiddleware, groupController.updateGroup);
+router.put('/:id', authMiddleware, groupController.updateGroup);
 
 /**
  * @swagger
- * /api/groups/{id}:
+ * /groups/{id}:
  *   delete:
  *     summary: Remove um grupo
  *     tags: [Groups]
@@ -140,12 +175,30 @@ router.put('/groups/:id', authMiddleware, groupController.updateGroup);
  *           type: integer
  *     responses:
  *       200:
- *         description: Grupo removido
+ *         description: Grupo removido com sucesso
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: Grupo removido
+ *                 group:
+ *                   $ref: '#/components/schemas/Group'
+ *       401:
+ *         description: Token não informado ou inválido
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/ErrorResponse'
  *       404:
  *         description: Grupo não encontrado
- *       401:
- *         description: Não autorizado
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/ErrorResponse'
  */
-router.delete('/groups/:id', authMiddleware, groupController.deleteGroup);
+router.delete('/:id', authMiddleware, groupController.deleteGroup);
 
 module.exports = router;

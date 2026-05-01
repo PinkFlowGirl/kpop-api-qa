@@ -2,48 +2,52 @@ const express = require('express');
 const router = express.Router();
 const jwt = require('jsonwebtoken');
 
-const JWT_SECRET = "kpop-secret-key";
+const JWT_SECRET = process.env.JWT_SECRET || "kpop-secret-key";
 
 /**
  * @swagger
  * tags:
- *   name: Auth
- *   description: Autenticação da API
+ *   - name: Auth
+ *     description: Autenticação da API
  */
 
 /**
  * @swagger
  * /auth/login:
  *   post:
- *     summary: Login do usuário
+ *     summary: Faz login e retorna um token JWT
  *     tags: [Auth]
+ *     security: []
  *     requestBody:
  *       required: true
  *       content:
  *         application/json:
  *           schema:
- *             type: object
- *             required:
- *               - username
- *               - password
- *             properties:
- *               username:
- *                 type: string
- *               password:
- *                 type: string
+ *             $ref: '#/components/schemas/LoginRequest'
  *     responses:
  *       200:
- *         description: Login com sucesso
+ *         description: Login realizado com sucesso
+ *       400:
+ *         description: Dados inválidos
  *       401:
- *         description: Login inválido
+ *         description: Credenciais inválidas
  */
 router.post('/login', (req, res) => {
   const { username, password } = req.body;
 
+  // validação
+  if (!username || !password) {
+    return res.status(400).json({
+      ok: false,
+      message: "Username e password são obrigatórios"
+    });
+  }
+
+  // autenticação simples (mock)
   if (username === "admin" && password === "123") {
     const token = jwt.sign({ username }, JWT_SECRET, { expiresIn: "1h" });
 
-    return res.json({
+    return res.status(200).json({
       ok: true,
       token
     });
@@ -51,7 +55,7 @@ router.post('/login', (req, res) => {
 
   return res.status(401).json({
     ok: false,
-    message: "Login inválido"
+    message: "Credenciais inválidas"
   });
 });
 
