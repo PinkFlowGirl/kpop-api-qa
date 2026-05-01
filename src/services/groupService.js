@@ -37,6 +37,12 @@ function validateGroup(data) {
 function createGroup(data) {
   validateGroup(data);
 
+  // Valida se já existe um grupo com esse nome
+  const existingGroup = groups.find(g => g.name.toLowerCase() === data.name.toLowerCase());
+  if (existingGroup) {
+    throw new Error(`Um grupo com o nome "${data.name}" já existe`);
+  }
+
   const newGroup = {
     id: getNextId(),
     name: data.name,

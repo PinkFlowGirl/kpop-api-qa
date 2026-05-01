@@ -26,7 +26,7 @@ function getNextId() {
 }
 
 function resetDatabase() {
-  currentId = 1;
+  currentId = 3;
   groups = initialGroups.map(group => ({ ...group }));
 }
 

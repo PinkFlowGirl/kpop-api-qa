@@ -3,7 +3,11 @@ const groupService = require('../services/groupService');
 exports.createGroup = (req, res) => {
   try {
     const newGroup = groupService.createGroup(req.body);
-    return res.status(201).json(newGroup);
+    return res.status(201).json({
+      ok: true,
+      message: "Grupo criado com sucesso",
+      data: newGroup
+    });
   } catch (error) {
     return res.status(400).json({
       ok: false,
@@ -14,7 +18,11 @@ exports.createGroup = (req, res) => {
 
 exports.getAllGroups = (req, res) => {
   const groups = groupService.getAllGroups();
-  return res.json(groups);
+  return res.json({
+    ok: true,
+    message: "Lista de grupos retornada com sucesso",
+    data: groups
+  });
 };
 
 exports.getGroupById = (req, res) => {
@@ -27,7 +35,11 @@ exports.getGroupById = (req, res) => {
     });
   }
 
-  return res.json(group);
+  return res.json({
+    ok: true,
+    message: "Grupo encontrado com sucesso",
+    data: group
+  });
 };
 
 exports.updateGroup = (req, res) => {
@@ -41,7 +53,11 @@ exports.updateGroup = (req, res) => {
       });
     }
 
-    return res.json(updated);
+    return res.json({
+      ok: true,
+      message: "Grupo atualizado com sucesso",
+      data: updated
+    });
   } catch (error) {
     return res.status(400).json({
       ok: false,
@@ -61,7 +77,8 @@ exports.deleteGroup = (req, res) => {
   }
 
   return res.json({
-    message: "Grupo removido",
-    group: deleted
+    ok: true,
+    message: "Grupo removido com sucesso",
+    data: deleted
   });
 };

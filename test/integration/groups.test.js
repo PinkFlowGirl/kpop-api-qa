@@ -2,12 +2,14 @@ const { expect } = require('chai');
 const request = require('supertest');
 const app = require('../../app');
 const { getToken } = require('../helpers/authHelper');
+const { resetDatabase } = require('../../src/models/database');
 
 describe('Groups API - /api/groups', () => {
   let token = '';
   let groupId = '';
 
   before(async () => {
+    resetDatabase();
     token = await getToken();
 
     const res = await request(app)
@@ -21,7 +23,7 @@ describe('Groups API - /api/groups', () => {
         members: ['A', 'B']
       });
 
-    groupId = res.body._id || res.body.id;
+    groupId = res.body.data?.id || res.body.data?._id;
   });
 
   it('deve criar um grupo válido', async () => {
@@ -39,11 +41,13 @@ describe('Groups API - /api/groups', () => {
       .send(group);
 
     expect(response.status).to.equal(201);
-    expect(response.body.name).to.equal(group.name);
-    expect(response.body.debutYear).to.equal(group.debutYear);
-    expect(response.body.fandom).to.equal(group.fandom);
-    expect(response.body.generation).to.equal(group.generation);
-    expect(response.body.members).to.deep.equal(group.members);
+    expect(response.body.ok).to.equal(true);
+    expect(response.body.message).to.equal('Grupo criado com sucesso');
+    expect(response.body.data.name).to.equal(group.name);
+    expect(response.body.data.debutYear).to.equal(group.debutYear);
+    expect(response.body.data.fandom).to.equal(group.fandom);
+    expect(response.body.data.generation).to.equal(group.generation);
+    expect(response.body.data.members).to.deep.equal(group.members);
   });
 
   it('deve validar members como array de strings', async () => {
@@ -132,6 +136,24 @@ describe('Groups API - /api/groups', () => {
       .set('Authorization', `Bearer ${token}`);
 
     expect(response.status).to.equal(404);
+  });
+
+  it('não deve criar grupo com nome duplicado', async () => {
+    const group = {
+      name: 'BTS',
+      debutYear: 2013,
+      fandom: 'ARMY',
+      generation: 3,
+      members: ['RM', 'Jin']
+    };
+
+    const response = await request(app)
+      .post('/api/groups')
+      .set('Authorization', `Bearer ${token}`)
+      .send(group);
+
+    expect(response.status).to.equal(400);
+    expect(response.body.message).to.include('já existe');
   });
 
 });
