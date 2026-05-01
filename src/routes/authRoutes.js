@@ -28,22 +28,22 @@ const JWT_SECRET = process.env.JWT_SECRET || "kpop-secret-key";
  *       200:
  *         description: Login realizado com sucesso
  *       400:
- *         description: Dados inválidos
+ *         description: Erro de validação nos dados enviados na requisição
  *       401:
- *         description: Credenciais inválidas
+ *         description: Usuário não autenticado
  */
 router.post('/login', (req, res) => {
   const { username, password } = req.body;
 
-  // validação
+  
   if (!username || !password) {
     return res.status(400).json({
       ok: false,
-      message: "Username e password são obrigatórios"
+      message: 'Os campos "username" e "password" são obrigatórios'
     });
   }
 
-  // autenticação simples (mock)
+ 
   if (username === "admin" && password === "123") {
     const token = jwt.sign({ username }, JWT_SECRET, { expiresIn: "1h" });
 
@@ -55,7 +55,7 @@ router.post('/login', (req, res) => {
 
   return res.status(401).json({
     ok: false,
-    message: "Credenciais inválidas"
+    message: "Token inválido"
   });
 });
 

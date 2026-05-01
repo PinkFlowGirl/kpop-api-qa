@@ -10,7 +10,7 @@ describe('Kpop API - Groups', () => {
     token = await getToken();
   });
 
-  describe('POST /api/groups', () => {
+  describe('POST /api', () => {
 
     it('deve criar um grupo válido', async () => {
       const group = {
@@ -22,7 +22,7 @@ describe('Kpop API - Groups', () => {
       };
 
       const response = await request(app)
-        .post('/api/groups')
+        .post('/api')
         .set('Authorization', `Bearer ${token}`)
         .send(group);
 
@@ -38,7 +38,7 @@ describe('Kpop API - Groups', () => {
 
     it('deve validar members como array de strings', async () => {
       const response = await request(app)
-        .post('/api/groups')
+        .post('/api')
         .set('Authorization', `Bearer ${token}`)
         .send({
           name: 'Invalid Group',
@@ -49,7 +49,7 @@ describe('Kpop API - Groups', () => {
         });
 
       expect(response.status).to.equal(400);
-      expect(response.body.message).to.equal('members deve ser um array de strings');
+      expect(response.body.message).to.equal('O campo "members" deve ser um array de strings');
     });
 
   });

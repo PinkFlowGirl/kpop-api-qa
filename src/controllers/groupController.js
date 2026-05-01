@@ -6,6 +6,7 @@ exports.createGroup = (req, res) => {
     return res.status(201).json(newGroup);
   } catch (error) {
     return res.status(400).json({
+      ok: false,
       message: error.message
     });
   }
@@ -21,6 +22,7 @@ exports.getGroupById = (req, res) => {
 
   if (!group) {
     return res.status(404).json({
+      ok: false,
       message: "Grupo não encontrado"
     });
   }
@@ -34,6 +36,7 @@ exports.updateGroup = (req, res) => {
 
     if (!updated) {
       return res.status(404).json({
+        ok: false,
         message: "Grupo não encontrado"
       });
     }
@@ -41,6 +44,7 @@ exports.updateGroup = (req, res) => {
     return res.json(updated);
   } catch (error) {
     return res.status(400).json({
+      ok: false,
       message: error.message
     });
   }
@@ -51,6 +55,7 @@ exports.deleteGroup = (req, res) => {
 
   if (!deleted) {
     return res.status(404).json({
+      ok: false,
       message: "Grupo não encontrado"
     });
   }

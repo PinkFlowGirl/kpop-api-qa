@@ -21,6 +21,80 @@ const options = {
           scheme: 'bearer',
           bearerFormat: 'JWT'
         }
+      },
+      schemas: {
+        LoginRequest: {
+          type: 'object',
+          required: ['username', 'password'],
+          properties: {
+            username: {
+              type: 'string',
+              example: 'admin'
+            },
+            password: {
+              type: 'string',
+              example: '123'
+            }
+          }
+        },
+        GroupInput: {
+          type: 'object',
+          required: ['name', 'fandom', 'debutYear'],
+          properties: {
+            name: {
+              type: 'string',
+              example: 'BLACKPINK'
+            },
+            fandom: {
+              type: 'string',
+              example: 'BLINK'
+            },
+            members: {
+              type: 'array',
+              items: {
+                type: 'string'
+              },
+              example: ['Jisoo', 'Jennie', 'Rosé', 'Lisa']
+            },
+            debutYear: {
+              type: 'integer',
+              example: 2016
+            },
+            generation: {
+              type: 'integer',
+              example: 3
+            }
+          }
+        },
+        Group: {
+          allOf: [
+            {
+              $ref: '#/components/schemas/GroupInput'
+            },
+            {
+              type: 'object',
+              properties: {
+                id: {
+                  type: 'integer',
+                  example: 1
+                }
+              }
+            }
+          ]
+        },
+        ErrorResponse: {
+          type: 'object',
+          properties: {
+            ok: {
+              type: 'boolean',
+              example: false
+            },
+            message: {
+              type: 'string',
+              example: 'Token não informado'
+            }
+          }
+        }
       }
     }
   },

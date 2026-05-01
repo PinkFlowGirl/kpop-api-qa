@@ -7,9 +7,9 @@ const authRoutes = require('./src/routes/authRoutes');
 const groupRoutes = require('./src/routes/groupRoutes');
 
 app.use('/api/auth', authRoutes);
-app.use('/api', groupRoutes);
+app.use('/api/groups', groupRoutes);
 
-// Rota base
+
 app.get('/', (req, res) => {
   res.send('Kpop API is running');
 });
@@ -27,7 +27,7 @@ app.use(
   })
 );
 
-// Server
+
 if (require.main === module) {
   const PORT = process.env.PORT || 3000;
 

@@ -3,24 +3,34 @@ const { groups, getNextId } = require('../models/database');
 function validateGroup(data) {
   const { name, fandom, debutYear, generation, members } = data;
 
-  if (!name || typeof name !== 'string') {
-    throw new Error('name é obrigatório e deve ser string');
+  if (!name || typeof name !== 'string' || !name.trim()) {
+    throw new Error('O campo "name" é obrigatório e deve ser uma string não vazia');
   }
 
-  if (!fandom || typeof fandom !== 'string') {
-    throw new Error('fandom é obrigatório e deve ser string');
+  if (!fandom || typeof fandom !== 'string' || !fandom.trim()) {
+    throw new Error('O campo "fandom" é obrigatório e deve ser uma string não vazia');
   }
 
-  if (!debutYear || typeof debutYear !== 'number') {
-    throw new Error('debutYear deve ser número');
+  if (typeof debutYear !== 'number') {
+    throw new Error('O campo "debutYear" é obrigatório e deve ser um número');
   }
 
-  if (generation && typeof generation !== 'number') {
-    throw new Error('generation deve ser número');
+  if (generation !== undefined && typeof generation !== 'number') {
+    throw new Error('O campo "generation" deve ser um número');
   }
 
-  if (members && !Array.isArray(members)) {
-    throw new Error('members deve ser um array de strings');
+  if (members !== undefined) {
+    if (!Array.isArray(members)) {
+      throw new Error('O campo "members" deve ser um array de strings');
+    }
+
+    const hasNonStringMember = members.some(
+      member => typeof member !== 'string' || !member.trim()
+    );
+
+    if (hasNonStringMember) {
+      throw new Error('O campo "members" deve conter apenas strings não vazias');
+    }
   }
 }
 
