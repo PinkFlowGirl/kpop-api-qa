@@ -3,16 +3,19 @@ const app = express();
 
 app.use(express.json());
 
-// Routes
 const authRoutes = require('./src/routes/authRoutes');
 const groupRoutes = require('./src/routes/groupRoutes');
 
-
 app.use('/api/auth', authRoutes);
-app.use('/api', groupRoutes);
+app.use('/api/groups', groupRoutes);
 
-// Swagger
-const { swaggerUi, swaggerSpec } = require('./src/docs/swagger');
+
+app.get('/', (req, res) => {
+  res.send('Kpop API is running');
+});
+
+
+const { swaggerUi, swaggerSpec } = require('./src/config/swagger');
 
 app.use(
   '/api-docs',
@@ -24,7 +27,14 @@ app.use(
   })
 );
 
-app.listen(3000, () => {
-  console.log("Servidor rodando na porta 3000");
-  console.log("Swagger: http://localhost:3000/api-docs");
-});
+
+if (require.main === module) {
+  const PORT = process.env.PORT || 3000;
+
+  app.listen(PORT, () => {
+    console.log(`Servidor rodando na porta ${PORT}`);
+    console.log(`Swagger: http://localhost:${PORT}/api-docs`);
+  });
+}
+
+module.exports = app;

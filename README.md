@@ -1,29 +1,66 @@
-# Kpop API REST
+# K-pop API
 
-API REST para gerenciamento de grupos de K-pop, com autenticação JWT, CRUD completo e documentação via Swagger.
+API REST para gerenciamento de grupos de K-pop, com autenticação, testes automatizados e documentação completa de QA.
 
-Este projeto foi desenvolvido com foco em práticas de QA e testes de API.
+Este projeto demonstra práticas de qualidade de software, incluindo testes automatizados, testes de performance e documentação estruturada.
 
 ---
 
 ## Funcionalidades
 
-- Autenticação de usuário (JWT)
-- CRUD de grupos de K-pop
-- Validação de dados obrigatórios
-- Middleware de proteção de rotas
-- Documentação com Swagger
-- Estrutura organizada em camadas (routes, controllers, services)
+- Autenticação de usuários
+- Cadastro de grupos de K-pop
+- Listagem de grupos
+- Atualização de dados
+- Exclusão de grupos
 
 ---
 
-## Tecnologias utilizadas
+## Tecnologias
 
 - Node.js
-- Express.js
-- JWT (jsonwebtoken)
-- Swagger (swagger-ui-express / swagger-jsdoc)
+- Express
+- Mocha / Chai
+- Supertest
+- k6
+- Swagger
 
 ---
 
-## Estrutura do projeto
+## Como rodar o projeto
+
+```bash
+git clone <repo>
+cd kpop-api
+npm install
+npm start
+
+```
+## Executar testes
+
+```
+npm test
+
+```
+## Documentação completa
+
+A documentação completa está disponível no Wiki do repositório, incluindo:
+
+- User Stories
+- Regras de Negócio
+- Plano de Testes
+- Casos de Teste
+- Testes Automatizados
+
+[Acessar Wiki](../../wiki)
+
+## Diferenciais
+
+- Documentação completa de QA
+- Testes automatizados com Mocha/Chai
+- Testes de performance com k6
+- Estrutura baseada em boas práticas de mercado
+
+## Autora
+
+Desenvolvido por Claudia de Oliveira Mangueira

@@ -1,17 +1,49 @@
 const { groups, getNextId } = require('../models/database');
 
-function createGroup(data) {
-  const { name, fandom, debutYear } = data;
+function validateGroup(data) {
+  const { name, fandom, debutYear, generation, members } = data;
 
-  if (!name || !fandom || !debutYear) {
-    throw new Error("Dados obrigatórios");
+  if (!name || typeof name !== 'string' || !name.trim()) {
+    throw new Error('O campo "name" é obrigatório e deve ser uma string não vazia');
   }
+
+  if (!fandom || typeof fandom !== 'string' || !fandom.trim()) {
+    throw new Error('O campo "fandom" é obrigatório e deve ser uma string não vazia');
+  }
+
+  if (typeof debutYear !== 'number') {
+    throw new Error('O campo "debutYear" é obrigatório e deve ser um número');
+  }
+
+  if (generation !== undefined && typeof generation !== 'number') {
+    throw new Error('O campo "generation" deve ser um número');
+  }
+
+  if (members !== undefined) {
+    if (!Array.isArray(members)) {
+      throw new Error('O campo "members" deve ser um array de strings');
+    }
+
+    const hasNonStringMember = members.some(
+      member => typeof member !== 'string' || !member.trim()
+    );
+
+    if (hasNonStringMember) {
+      throw new Error('O campo "members" deve conter apenas strings não vazias');
+    }
+  }
+}
+
+function createGroup(data) {
+  validateGroup(data);
 
   const newGroup = {
     id: getNextId(),
-    name,
-    fandom,
-    debutYear
+    name: data.name,
+    fandom: data.fandom,
+    debutYear: data.debutYear,
+    generation: data.generation || null,
+    members: data.members || []
   };
 
   groups.push(newGroup);
@@ -30,9 +62,10 @@ function update(id, data) {
   const group = getGroupById(id);
   if (!group) return null;
 
-  if (data.name) group.name = data.name;
-  if (data.fandom) group.fandom = data.fandom;
-  if (data.debutYear) group.debutYear = data.debutYear;
+  // valida só os campos enviados
+  validateGroup({ ...group, ...data });
+
+  Object.assign(group, data);
 
   return group;
 }
@@ -41,7 +74,10 @@ function remove(id) {
   const index = groups.findIndex(g => g.id === Number(id));
   if (index === -1) return null;
 
-  return groups.splice(index, 1);
+  const removed = groups[index];
+  groups.splice(index, 1);
+
+  return removed;
 }
 
 module.exports = {

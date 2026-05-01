@@ -1,55 +1,28 @@
-let groups = [];
-let id = 1;
+const groupService = require('../services/groupService');
 
-/**
- * Criar grupo
- */
 exports.createGroup = (req, res) => {
-  const body = req.body;
-
-  // segurança contra body vazio
-  if (!body) {
+  try {
+    const newGroup = groupService.createGroup(req.body);
+    return res.status(201).json(newGroup);
+  } catch (error) {
     return res.status(400).json({
-      message: "Body não enviado"
+      ok: false,
+      message: error.message
     });
   }
-
-  const { name, debutYear, fandom } = body;
-
-  // validação obrigatória
-  if (!name || !debutYear || !fandom) {
-    return res.status(400).json({
-      message: "name, debutYear e fandom são obrigatórios"
-    });
-  }
-
-  const newGroup = {
-    id: id++,
-    name,
-    debutYear,
-    fandom
-  };
-
-  groups.push(newGroup);
-
-  return res.status(201).json(newGroup);
 };
 
-/**
- * Listar todos os grupos
- */
 exports.getAllGroups = (req, res) => {
+  const groups = groupService.getAllGroups();
   return res.json(groups);
 };
 
-/**
- * Buscar grupo por ID
- */
 exports.getGroupById = (req, res) => {
-  const group = groups.find(g => g.id == req.params.id);
+  const group = groupService.getGroupById(req.params.id);
 
   if (!group) {
     return res.status(404).json({
+      ok: false,
       message: "Grupo não encontrado"
     });
   }
@@ -57,43 +30,38 @@ exports.getGroupById = (req, res) => {
   return res.json(group);
 };
 
-/**
- * Atualizar grupo
- */
 exports.updateGroup = (req, res) => {
-  const group = groups.find(g => g.id == req.params.id);
+  try {
+    const updated = groupService.update(req.params.id, req.body);
 
-  if (!group) {
-    return res.status(404).json({
-      message: "Grupo não encontrado"
+    if (!updated) {
+      return res.status(404).json({
+        ok: false,
+        message: "Grupo não encontrado"
+      });
+    }
+
+    return res.json(updated);
+  } catch (error) {
+    return res.status(400).json({
+      ok: false,
+      message: error.message
     });
   }
-
-  const { name, debutYear, fandom } = req.body;
-
-  if (name) group.name = name;
-  if (debutYear) group.debutYear = debutYear;
-  if (fandom) group.fandom = fandom;
-
-  return res.json(group);
 };
 
-/**
- * Deletar grupo
- */
 exports.deleteGroup = (req, res) => {
-  const index = groups.findIndex(g => g.id == req.params.id);
+  const deleted = groupService.remove(req.params.id);
 
-  if (index === -1) {
+  if (!deleted) {
     return res.status(404).json({
+      ok: false,
       message: "Grupo não encontrado"
     });
   }
-
-  const deleted = groups.splice(index, 1);
 
   return res.json({
     message: "Grupo removido",
-    group: deleted[0]
+    group: deleted
   });
 };
