@@ -44,13 +44,16 @@ npm test
 ```
 ## Documentação completa
 
-A documentação completa está disponível no Wiki do repositório, incluindo:
+A documentação completa está disponível no Wiki do repositório e no documento local de QA, incluindo:
 
 - User Stories
 - Regras de Negócio
 - Plano de Testes
 - Casos de Teste
 - Testes Automatizados
+
+- [Casos de Teste ISO 29119](./wiki/Casos-de-Teste.md)
+- [Plano de Testes ISO 29119](./wiki/Plano-de-Testes.md)
 
 [Acessar Wiki](../../wiki)
 
