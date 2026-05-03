@@ -88,7 +88,7 @@ export default function (data) {
 
     check(res, {
       'GET status 200': (r) => r.status === 200,
-      'GET é array': (r) => Array.isArray(r.json()),
+      'GET é array': (r) => Array.isArray(r.json('data')),
     });
 
     if (res.status !== 200) errorRate.add(1);
@@ -102,7 +102,7 @@ export default function (data) {
       name: `K-pop Group ${Date.now()}`,
       debutYear: 2024,
       fandom: `KPOP${Math.random().toString(36).substring(2, 8)}`,
-      generation: 1, // 👈 importante para evitar erro
+      generation: 1,
     };
 
     const res = http.post(
@@ -118,15 +118,15 @@ export default function (data) {
 
     check(res, {
       'POST status 201': (r) => r.status === 201,
-      'POST retorna grupo válido': (r) => !!r.json('id'),
+      'POST retorna grupo válido': (r) => !!r.json('data') && !!r.json('data').id,
     });
 
-    const group = res.json();
+    const createdGroup = res.json('data');
 
     // ---------------- PUT ----------------
     group('04 - PUT Groups', () => {
       const updateRes = http.put(
-        `${BASE_URL}/groups/${group.id}`,
+        `${BASE_URL}/groups/${createdGroup.id}`,
         JSON.stringify({
           fandom: `Updated_${Date.now()}`,
           generation: 1,
@@ -150,7 +150,7 @@ export default function (data) {
     // ---------------- DELETE ----------------
     group('05 - DELETE Groups', () => {
       const deleteRes = http.del(
-        `${BASE_URL}/groups/${group.id}`,
+        `${BASE_URL}/groups/${createdGroup.id}`,
         null,
         { headers }
       );
