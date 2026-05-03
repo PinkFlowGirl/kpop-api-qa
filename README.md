@@ -1,14 +1,52 @@
-# K-pop API
+# K-pop API QA
 
-API REST para gerenciamento de grupos de K-pop, com autenticação, testes automatizados e documentação completa de QA.
+API REST para gerenciamento de grupos de K-pop, com autenticação JWT, testes automatizados e documentação completa de QA.
 
-Este projeto demonstra práticas de qualidade de software, incluindo testes automatizados, testes de performance e documentação estruturada.
+Este projeto demonstra práticas de qualidade de software, incluindo testes de integração, testes de performance e documentação estruturada seguindo a ISO 29119.
+
+---
+
+## Tecnologias
+
+- Node.js + Express
+- Banco de dados em memória (in-memory)
+- JWT (autenticação)
+- Swagger (documentação da API)
+- Mocha + Chai + Supertest (testes de integração)
+- k6 (testes de performance)
+- GitHub Actions (CI pipeline)
+---
+
+## Como rodar o projeto
+
+```bash
+git clone https://github.com/PinkFlowGirl/kpop-api-qa.git
+cd kpop-api-qa
+npm install
+cp .env.example .env
+# configure as variáveis de ambiente no arquivo .env
+npm start
+```
+
+---
+
+## Executar testes
+
+Testes de integração:
+```bash
+npm test
+```
+
+Testes de performance (k6):
+```bash
+k6 run performance/load-test.js
+```
 
 ---
 
 ## Funcionalidades
 
-- Autenticação de usuários
+- Autenticação de usuários com JWT
 - Cadastro de grupos de K-pop
 - Listagem de grupos
 - Atualização de dados
@@ -16,55 +54,33 @@ Este projeto demonstra práticas de qualidade de software, incluindo testes auto
 
 ---
 
-## Tecnologias
-
-- Node.js
-- Express
-- Mocha / Chai
-- Supertest
-- k6
-- Swagger
-
----
-
-## Como rodar o projeto
-
-```bash
-git clone <repo>
-cd kpop-api
-npm install
-npm start
-
-```
-## Executar testes
-
-```
-npm test
-
-```
 ## Documentação completa
 
-A documentação completa está disponível no Wiki do repositório e no documento local de QA, incluindo:
+A documentação completa está disponível na Wiki do repositório, incluindo:
 
 - User Stories
 - Regras de Negócio
-- Plano de Testes
-- Casos de Teste
+- Plano de Testes (ISO 29119)
+- Casos de Teste (ISO 29119)
 - Testes Automatizados
+- Testes Exploratórios (Charters)
+- Evidências
+- Relatório de Bugs (ISO 29119)
 
-- [Casos de Teste ISO 29119](./wiki/Casos-de-Teste.md)
-- [Plano de Testes ISO 29119](./wiki/Plano-de-Testes.md)
-- [Bug Reports ISO 29119](./wiki/Bug-Reports.md)
+**[Acessar Wiki](https://github.com/PinkFlowGirl/kpop-api-qa/wiki)**
 
-[Acessar Wiki](../../wiki)
+---
 
 ## Diferenciais
 
-- Documentação completa de QA
-- Testes automatizados com Mocha/Chai
+- Documentação completa de QA baseada na ISO 29119
+- Testes automatizados com Mocha, Chai e Supertest
 - Testes de performance com k6
-- Estrutura baseada em boas práticas de mercado
+- CI pipeline com GitHub Actions
+- Testes exploratórios documentados com charters
+
+---
 
 ## Autora
 
-Desenvolvido por Claudia de Oliveira Mangueira
+Desenvolvido por **Claudia de Oliveira Mangueira**
