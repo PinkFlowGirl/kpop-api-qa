@@ -37,9 +37,6 @@ export function setup() {
     }
   );
 
-  console.log('SETUP STATUS:', loginRes.status);
-  console.log('SETUP BODY:', loginRes.body);
-
   check(loginRes, {
     'Setup login OK': (r) => r.status === 200,
   });
@@ -113,9 +110,6 @@ export default function (data) {
 
     groupLatency.add(res.timings.duration);
 
-    console.log('POST STATUS:', res.status);
-    console.log('POST BODY:', res.body);
-
     check(res, {
       'POST status 201': (r) => r.status === 201,
       'POST retorna grupo válido': (r) => !!r.json('data') && !!r.json('data').id,
@@ -134,9 +128,6 @@ export default function (data) {
         { headers }
       );
 
-      console.log('PUT STATUS:', updateRes.status);
-      console.log('PUT BODY:', updateRes.body);
-
       groupLatency.add(updateRes.timings.duration);
 
       check(updateRes, {
@@ -154,8 +145,6 @@ export default function (data) {
         null,
         { headers }
       );
-
-      console.log('DELETE STATUS:', deleteRes.status);
 
       groupLatency.add(deleteRes.timings.duration);
 
