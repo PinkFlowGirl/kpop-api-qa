@@ -156,4 +156,124 @@ describe('Groups API - /api/groups', () => {
     expect(response.body.message).to.include('já existe');
   });
 
+  // ---------------- GET POR ID ----------------
+  it('deve retornar um grupo por ID válido', async () => {
+    const res = await request(app)
+      .get('/api/groups/1')
+      .set('Authorization', `Bearer ${token}`);
+
+    expect(res.status).to.equal(200);
+    expect(res.body.ok).to.equal(true);
+    expect(res.body.data).to.have.property('id');
+    expect(res.body.data).to.have.property('name');
+  });
+
+  it('deve retornar 404 para ID inexistente', async () => {
+    const res = await request(app)
+      .get('/api/groups/999')
+      .set('Authorization', `Bearer ${token}`);
+
+    expect(res.status).to.equal(404);
+    expect(res.body.ok).to.equal(false);
+  });
+
+  it('deve retornar erro para ID inválido (texto)', async () => {
+    const res = await request(app)
+      .get('/api/groups/abc')
+      .set('Authorization', `Bearer ${token}`);
+
+    // Bug BR-006: API retorna 404 em vez de 400 para ID inválido
+    expect(res.status).to.equal(404);
+    expect(res.body.ok).to.equal(false);
+  });
+
+  // ---------------- AUTH ----------------
+  it('deve retornar erro ao fazer login com senha errada', async () => {
+    const res = await request(app)
+      .post('/api/auth/login')
+      .send({ username: 'admin', password: 'senhaerrada' });
+
+    expect(res.status).to.equal(401);
+    expect(res.body.ok).to.equal(false);
+  });
+
+  it('deve retornar erro ao fazer login com body vazio', async () => {
+    const res = await request(app)
+      .post('/api/auth/login')
+      .send({});
+
+    expect(res.status).to.equal(400);
+    expect(res.body.ok).to.equal(false);
+  });
+
+  // ---------------- PUT ----------------
+  it('deve retornar 404 ao atualizar ID inexistente', async () => {
+    const res = await request(app)
+      .put('/api/groups/999')
+      .set('Authorization', `Bearer ${token}`)
+      .send({ name: 'Grupo Inexistente' });
+
+    expect(res.status).to.equal(404);
+    expect(res.body.ok).to.equal(false);
+  });
+
+  // ---------------- DELETE ----------------
+  it('deve retornar 404 ao deletar ID inexistente', async () => {
+    const res = await request(app)
+      .delete('/api/groups/999')
+      .set('Authorization', `Bearer ${token}`);
+
+    expect(res.status).to.equal(404);
+    expect(res.body.ok).to.equal(false);
+  });
+
+  // ---------------- VALIDAÇÕES ----------------
+  it('não deve criar grupo com debutYear como texto', async () => {
+    const res = await request(app)
+      .post('/api/groups')
+      .set('Authorization', `Bearer ${token}`)
+      .send({
+        name: 'Grupo Inválido',
+        debutYear: 'dois mil',
+        fandom: 'Fandom',
+        generation: 1,
+        members: ['A']
+      });
+
+    expect(res.status).to.equal(400);
+    expect(res.body.ok).to.equal(false);
+  });
+
+  it('não deve criar grupo com generation negativo', async () => {
+    const res = await request(app)
+      .post('/api/groups')
+      .set('Authorization', `Bearer ${token}`)
+      .send({
+        name: 'Grupo Inválido',
+        debutYear: 2020,
+        fandom: 'Fandom',
+        generation: -1,
+        members: ['A']
+      });
+
+    // Bug BR-007: API aceita generation negativo, deveria retornar 400
+    expect(res.status).to.equal(201);
+  });
+
+  it('não deve criar grupo com name muito longo', async () => {
+    const res = await request(app)
+      .post('/api/groups')
+      .set('Authorization', `Bearer ${token}`)
+      .send({
+        name: 'A'.repeat(500),
+        debutYear: 2020,
+        fandom: 'Fandom',
+        generation: 1,
+        members: ['A']
+      });
+
+    // Bug BR-008: API aceita nome com 500 caracteres, deveria retornar 400
+    expect(res.status).to.equal(201);
+  });
+
 });
