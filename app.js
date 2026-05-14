@@ -4,9 +4,16 @@ const mongoose = require('mongoose');
 const app = express();
 app.use(express.json());
 
-mongoose.connect(process.env.MONGODB_URI)
-  .then(() => console.log('✅ MongoDB conectado!'))
-  .catch(err => console.error('❌ Erro ao conectar MongoDB:', err));
+let isConnected = false;
+
+async function connectDB() {
+  if (isConnected) return;
+  await mongoose.connect(process.env.MONGODB_URI);
+  isConnected = true;
+  console.log('✅ MongoDB conectado!');
+}
+
+connectDB().catch(err => console.error('❌ Erro ao conectar MongoDB:', err));
 
 const authRoutes = require('./src/routes/authRoutes');
 const groupRoutes = require('./src/routes/groupRoutes');
