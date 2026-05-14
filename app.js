@@ -8,7 +8,11 @@ let isConnected = false;
 
 async function connectDB() {
   if (isConnected) return;
-  await mongoose.connect(process.env.MONGODB_URI);
+  await mongoose.connect(process.env.MONGODB_URI, {
+    serverSelectionTimeoutMS: 5000,
+    socketTimeoutMS: 45000,
+    bufferCommands: false,
+  });
   isConnected = true;
   console.log('✅ MongoDB conectado!');
 }
