@@ -4,20 +4,24 @@ const mongoose = require('mongoose');
 const app = express();
 app.use(express.json());
 
-let isConnected = false;
-
 async function connectDB() {
-  if (isConnected) return;
+  if (mongoose.connection.readyState >= 1) return;
   await mongoose.connect(process.env.MONGODB_URI, {
-    serverSelectionTimeoutMS: 5000,
+    serverSelectionTimeoutMS: 10000,
     socketTimeoutMS: 45000,
-    bufferCommands: false,
   });
-  isConnected = true;
   console.log('✅ MongoDB conectado!');
 }
 
-connectDB().catch(err => console.error('❌ Erro ao conectar MongoDB:', err));
+app.use(async (req, res, next) => {
+  try {
+    await connectDB();
+    next();
+  } catch (err) {
+    console.error('❌ Erro ao conectar MongoDB:', err);
+    res.status(500).json({ ok: false, message: 'Erro de conexão com o banco de dados' });
+  }
+});
 
 const authRoutes = require('./src/routes/authRoutes');
 const groupRoutes = require('./src/routes/groupRoutes');
