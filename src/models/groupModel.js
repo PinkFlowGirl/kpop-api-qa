@@ -1,12 +1,11 @@
-class Group {
-  constructor({ id, name, fandom, debutYear, generation, members }) {
-    this.id = id;
-    this.name = name;
-    this.fandom = fandom;
-    this.debutYear = debutYear;
-    this.generation = generation || null;
-    this.members = members || [];
-  }
-}
+const mongoose = require('mongoose');
 
-module.exports = Group;
+const groupSchema = new mongoose.Schema({
+  name: { type: String, required: true, unique: true },
+  fandom: { type: String, required: true },
+  debutYear: { type: Number, required: true },
+  generation: { type: Number, default: null },
+  members: [{ type: String }]
+}, { timestamps: true });
+
+module.exports = mongoose.model('Group', groupSchema);

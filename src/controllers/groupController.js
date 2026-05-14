@@ -1,8 +1,8 @@
 const groupService = require('../services/groupService');
 
-exports.createGroup = (req, res) => {
+exports.createGroup = async (req, res) => {
   try {
-    const newGroup = groupService.createGroup(req.body);
+    const newGroup = await groupService.createGroup(req.body);
     return res.status(201).json({
       ok: true,
       message: "Grupo criado com sucesso",
@@ -16,43 +16,53 @@ exports.createGroup = (req, res) => {
   }
 };
 
-exports.getAllGroups = (req, res) => {
-  const groups = groupService.getAllGroups();
-  return res.json({
-    ok: true,
-    message: "Lista de grupos retornada com sucesso",
-    data: groups
-  });
-};
-
-exports.getGroupById = (req, res) => {
-  const group = groupService.getGroupById(req.params.id);
-
-  if (!group) {
-    return res.status(404).json({
+exports.getAllGroups = async (req, res) => {
+  try {
+    const groups = await groupService.getAllGroups();
+    return res.json({
+      ok: true,
+      message: "Lista de grupos retornada com sucesso",
+      data: groups
+    });
+  } catch (error) {
+    return res.status(500).json({
       ok: false,
-      message: "Grupo não encontrado"
+      message: error.message
     });
   }
-
-  return res.json({
-    ok: true,
-    message: "Grupo encontrado com sucesso",
-    data: group
-  });
 };
 
-exports.updateGroup = (req, res) => {
+exports.getGroupById = async (req, res) => {
   try {
-    const updated = groupService.update(req.params.id, req.body);
+    const group = await groupService.getGroupById(req.params.id);
+    if (!group) {
+      return res.status(404).json({
+        ok: false,
+        message: "Grupo não encontrado"
+      });
+    }
+    return res.json({
+      ok: true,
+      message: "Grupo encontrado com sucesso",
+      data: group
+    });
+  } catch (error) {
+    return res.status(500).json({
+      ok: false,
+      message: error.message
+    });
+  }
+};
 
+exports.updateGroup = async (req, res) => {
+  try {
+    const updated = await groupService.update(req.params.id, req.body);
     if (!updated) {
       return res.status(404).json({
         ok: false,
         message: "Grupo não encontrado"
       });
     }
-
     return res.json({
       ok: true,
       message: "Grupo atualizado com sucesso",
@@ -66,19 +76,24 @@ exports.updateGroup = (req, res) => {
   }
 };
 
-exports.deleteGroup = (req, res) => {
-  const deleted = groupService.remove(req.params.id);
-
-  if (!deleted) {
-    return res.status(404).json({
+exports.deleteGroup = async (req, res) => {
+  try {
+    const deleted = await groupService.remove(req.params.id);
+    if (!deleted) {
+      return res.status(404).json({
+        ok: false,
+        message: "Grupo não encontrado"
+      });
+    }
+    return res.json({
+      ok: true,
+      message: "Grupo removido com sucesso",
+      data: deleted
+    });
+  } catch (error) {
+    return res.status(500).json({
       ok: false,
-      message: "Grupo não encontrado"
+      message: error.message
     });
   }
-
-  return res.json({
-    ok: true,
-    message: "Grupo removido com sucesso",
-    data: deleted
-  });
 };

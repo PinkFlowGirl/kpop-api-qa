@@ -1,4 +1,4 @@
-const { groups, getNextId } = require('../models/database');
+const Group = require('../models/groupModel');
 
 function validateGroup(data) {
   const { name, fandom, debutYear, generation, members } = data;
@@ -23,67 +23,53 @@ function validateGroup(data) {
     if (!Array.isArray(members)) {
       throw new Error('O campo "members" deve ser um array de strings');
     }
-
     const hasNonStringMember = members.some(
       member => typeof member !== 'string' || !member.trim()
     );
-
     if (hasNonStringMember) {
       throw new Error('O campo "members" deve conter apenas strings não vazias');
     }
   }
 }
 
-function createGroup(data) {
+async function createGroup(data) {
   validateGroup(data);
 
-  // Valida se já existe um grupo com esse nome
-  const existingGroup = groups.find(g => g.name.toLowerCase() === data.name.toLowerCase());
+  const existingGroup = await Group.findOne({ name: { $regex: new RegExp(`^${data.name}$`, 'i') } });
   if (existingGroup) {
     throw new Error(`Um grupo com o nome "${data.name}" já existe`);
   }
 
-  const newGroup = {
-    id: getNextId(),
+  const newGroup = new Group({
     name: data.name,
     fandom: data.fandom,
     debutYear: data.debutYear,
     generation: data.generation || null,
     members: data.members || []
-  };
+  });
 
-  groups.push(newGroup);
-  return newGroup;
+  return await newGroup.save();
 }
 
-function getAllGroups() {
-  return groups;
+async function getAllGroups() {
+  return await Group.find();
 }
 
-function getGroupById(id) {
-  return groups.find(g => g.id === Number(id));
+async function getGroupById(id) {
+  return await Group.findById(id);
 }
 
-function update(id, data) {
-  const group = getGroupById(id);
+async function update(id, data) {
+  const group = await getGroupById(id);
   if (!group) return null;
 
-  // valida só os campos enviados
-  validateGroup({ ...group, ...data });
+  validateGroup({ ...group.toObject(), ...data });
 
-  Object.assign(group, data);
-
-  return group;
+  return await Group.findByIdAndUpdate(id, data, { new: true });
 }
 
-function remove(id) {
-  const index = groups.findIndex(g => g.id === Number(id));
-  if (index === -1) return null;
-
-  const removed = groups[index];
-  groups.splice(index, 1);
-
-  return removed;
+async function remove(id) {
+  return await Group.findByIdAndDelete(id);
 }
 
 module.exports = {
