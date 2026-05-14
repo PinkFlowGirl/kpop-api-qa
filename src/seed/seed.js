@@ -6,10 +6,26 @@ const groups = require('./groups');
 async function seed() {
   await mongoose.connect(process.env.MONGODB_URI);
   console.log('✅ MongoDB conectado!');
-  await Group.deleteMany();
-  console.log('🗑️ Coleção limpa!');
-  await Group.insertMany(groups);
-  console.log(`✅ ${groups.length} grupos inseridos com sucesso!`);
+
+  let inseridos = 0;
+  let atualizados = 0;
+
+  for (const group of groups) {
+    const result = await Group.findOneAndUpdate(
+      { name: group.name },
+      group,
+      { upsert: true, new: true, setDefaultsOnInsert: true }
+    );
+    if (result.createdAt === result.updatedAt) {
+      inseridos++;
+    } else {
+      atualizados++;
+    }
+  }
+
+  console.log(`✅ ${inseridos} grupos inseridos!`);
+  console.log(`🔄 ${atualizados} grupos atualizados!`);
+  console.log(`📊 Total processado: ${groups.length} grupos`);
   process.exit();
 }
 
