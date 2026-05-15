@@ -8,7 +8,39 @@ const groups = [
   { name: "SEVENTEEN", fandom: "CARAT", debutYear: 2015, generation: 3, members: ["S.Coups", "Jeonghan", "Joshua", "Jun", "Hoshi", "Wonwoo", "Woozi", "DK", "Mingyu", "The8", "Seungkwan", "Vernon", "Dino"] },
   { name: "NewJeans", fandom: "Bunnies", debutYear: 2022, generation: 4, members: ["Minji", "Hanni", "Danielle", "Haerin", "Hyein"] },
   { name: "ITZY", fandom: "MIDZY", debutYear: 2019, generation: 4, members: ["Yeji", "Lia", "Ryujin", "Chaeryeong", "Yuna"] },
-  { name: "NCT 127", fandom: "NCTzen", debutYear: 2016, generation: 3, members: ["Taeil", "Johnny", "Taeyong", "Yuta", "Doyoung", "Jaehyun", "Jungwoo", "Mark", "Haechan"] }
+  { name: "NCT 127", fandom: "NCTzen", debutYear: 2016, generation: 3, members: ["Taeil", "Johnny", "Taeyong", "Yuta", "Doyoung", "Jaehyun", "Jungwoo", "Mark", "Haechan"] },
+  // 2ª Geração
+  { name: "Girls Generation", fandom: "SONE", debutYear: 2007, generation: 2, members: ["Taeyeon", "Sunny", "Tiffany", "Hyoyeon", "Yuri", "Sooyoung", "Yoona", "Seohyun"] },
+  { name: "SHINee", fandom: "Shawol", debutYear: 2008, generation: 2, members: ["Onew", "Key", "Minho", "Taemin"] },
+  { name: "2NE1", fandom: "Blackjack", debutYear: 2009, generation: 2, members: ["CL", "Sandara Park", "Park Bom", "Minzy"] },
+  { name: "BEAST", fandom: "B2UTY", debutYear: 2009, generation: 2, members: ["Yoon Doojoon", "Yong Junhyung", "Yang Yoseob", "Lee Kikwang", "Son Dongwoon"] },
+  { name: "4Minute", fandom: "4NIA", debutYear: 2009, generation: 2, members: ["HyunA", "Jihyun", "Gayoon", "Jiyoon", "Sohyun"] },
+  { name: "INFINITE", fandom: "Inspirit", debutYear: 2010, generation: 2, members: ["Sunggyu", "Dongwoo", "Woohyun", "Hoya", "Sungyeol", "L", "Sungjong"] },
+  { name: "GOT7", fandom: "IGOT7", debutYear: 2014, generation: 3, members: ["Jay B", "Mark", "Jackson", "Jinyoung", "Youngjae", "BamBam", "Yugyeom"] },
+  // 3ª Geração
+  { name: "Red Velvet", fandom: "ReVeluv", debutYear: 2014, generation: 3, members: ["Irene", "Seulgi", "Wendy", "Joy", "Yeri"] },
+  { name: "MAMAMOO", fandom: "MooMoo", debutYear: 2014, generation: 3, members: ["Solar", "Moonbyul", "Wheein", "Hwasa"] },
+  { name: "MONSTA X", fandom: "Monbebe", debutYear: 2015, generation: 3, members: ["Shownu", "Minhyuk", "Kihyun", "Hyungwon", "Joohoney", "I.M"] },
+  { name: "WINNER", fandom: "INNER CIRCLE", debutYear: 2014, generation: 3, members: ["Seunghoon", "Jinwoo", "Seungyoon", "Mino"] },
+  { name: "ASTRO", fandom: "AROHA", debutYear: 2016, generation: 3, members: ["MJ", "Jinjin", "Cha Eunwoo", "Moonbin", "Rocky", "Sanha"] },
+  { name: "PENTAGON", fandom: "Universe", debutYear: 2016, generation: 3, members: ["Jinho", "Hui", "Hongseok", "E'Dawn", "Shinwon", "Yeo One", "Yan An", "Yuto", "Kino", "Wooseok"] },
+  // 4ª Geração
+  { name: "ATEEZ", fandom: "ATINY", debutYear: 2018, generation: 4, members: ["Hongjoong", "Seonghwa", "Yunho", "Yeosang", "San", "Mingi", "Wooyoung", "Jongho"] },
+  { name: "TXT", fandom: "MOA", debutYear: 2019, generation: 4, members: ["Yeonjun", "Soobin", "Beomgyu", "Taehyun", "Huening Kai"] },
+  { name: "ENHYPEN", fandom: "ENGENE", debutYear: 2020, generation: 4, members: ["Jungwon", "Heeseung", "Jay", "Jake", "Sunghoon", "Sunoo", "Ni-ki"] },
+  { name: "IVE", fandom: "DIVE", debutYear: 2021, generation: 4, members: ["Gaeul", "Yujin", "Rei", "Wonyoung", "Liz", "Leeseo"] },
+  { name: "Le Sserafim", fandom: "FEARNOT", debutYear: 2022, generation: 4, members: ["Sakura", "Kim Chaewon", "Huh Yunjin", "Kazuha", "Hong Eunchae"] },
+  { name: "Kep1er", fandom: "Kep1ian", debutYear: 2022, generation: 4, members: ["Yujin", "Mashiro", "Chaehyun", "Hikaru", "Huening Bahiyyih", "Dayeon", "Xiaoting", "Youngeun", "Yeseo"] },
+  { name: "ZEROBASEONE", fandom: "ZEROSE", debutYear: 2023, generation: 4, members: ["Sung Hanbin", "Kim Jiwoong", "Zhang Hao", "Seok Matthew", "Kim Taerae", "Ricky", "Kim Gyuvin", "Park Gunwook", "Han Yujin"] },
+  // 1ª Geração
+  { name: "H.O.T", fandom: "Club H.O.T", debutYear: 1996, generation: 1, members: ["Moon Hee-jun", "Kangta", "Jang Woo-hyuk", "Tony An", "Lee Jae-won"] },
+  { name: "Sechs Kies", fandom: "Secks Kies Fan Club", debutYear: 1997, generation: 1, members: ["Eun Ji-won", "Lee Jai-jin", "Kim Jae-duc", "Kang Sung-hun", "Lee Sung-hoon", "Jang Su-won"] },
+  { name: "S.E.S", fandom: "Friend", debutYear: 1997, generation: 1, members: ["Bada", "Eugene", "Shoo"] },
+  { name: "Fin.K.L", fandom: "Finalee", debutYear: 1998, generation: 1, members: ["Lee Hyori", "Sung Yuri", "Lee Jin", "Ok Joo-hyun"] },
+  { name: "NRG", fandom: "NRG Fan Club", debutYear: 1997, generation: 1, members: ["Moon Seong-hoon", "Noh Yoo-min", "Lee Sung-jin", "Kim Hwan-seong", "Choi Sung-hoon"] },
+  { name: "Shinhwa", fandom: "Shinhwa Changjo", debutYear: 1998, generation: 1, members: ["Eric", "Lee Min-woo", "Kim Dong-wan", "Shin Hye-sung", "Jun Jin", "Andy"] },
+  { name: "g.o.d", fandom: "g.o.d Fan Club", debutYear: 1999, generation: 1, members: ["Park Joon-hyung", "Son Ho-young", "Kim Tae-woo", "Danny Ahn", "Yoon Kye-sang"] },
+  { name: "BoA", fandom: "jumping BoA", debutYear: 2000, generation: 1, members: ["BoA"] },
 ];
 
 module.exports = groups;
