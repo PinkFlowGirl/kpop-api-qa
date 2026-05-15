@@ -2,9 +2,11 @@ require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
+const path = require('path');
 const app = express();
 app.use(express.json());
 app.use(cors());
+app.use(express.static(path.join(__dirname, 'public')));
 
 async function connectDB() {
   if (mongoose.connection.readyState >= 1) return;
@@ -30,7 +32,7 @@ const groupRoutes = require('./src/routes/groupRoutes');
 app.use('/api/auth', authRoutes);
 app.use('/api/groups', groupRoutes);
 app.get('/', (req, res) => {
-  res.send('Kpop API is running');
+  res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 const { swaggerUi, swaggerSpec } = require('./src/config/swagger');
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec, {

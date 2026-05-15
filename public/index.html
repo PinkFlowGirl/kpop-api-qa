@@ -1,0 +1,218 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>KPOP Groups</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <div class="site">
+    <nav class="nav">
+      <button class="nav-logo" type="button" data-page="home">K<span>POP</span> GROUPS</button>
+      <div class="nav-links" aria-label="Navegacao principal">
+        <button type="button" data-page="news">News</button>
+        <button type="button" data-page="groups">Groups</button>
+        <button type="button" data-page="members">Members</button>
+        <button type="button" data-page="api">API</button>
+      </div>
+      <button class="nav-login" type="button" data-page="login" id="login-link">Login</button>
+    </nav>
+
+    <main>
+      <section class="page active" id="page-home">
+        <div class="hero">
+          <div class="hero-figures" aria-hidden="true">
+            <div class="hfig small"></div>
+            <div class="hfig medium"></div>
+            <div class="hfig tall"></div>
+            <div class="hfig peak"></div>
+            <div class="hfig tall"></div>
+            <div class="hfig medium"></div>
+            <div class="hfig small"></div>
+          </div>
+          <div class="hero-gradient"></div>
+          <div class="hero-content">
+            <div>
+              <p class="hero-eyebrow">Official directory</p>
+              <h1>K-POP<br>GROUPS</h1>
+              <p class="hero-sub">All generations / all fandoms</p>
+            </div>
+            <div class="hero-stat">
+              <strong id="hero-count">--</strong>
+              <span>groups</span>
+            </div>
+          </div>
+        </div>
+
+        <section class="section">
+          <div class="section-header">
+            <h2>News</h2>
+            <button type="button" data-page="news">More</button>
+          </div>
+          <div class="news-list">
+            <article class="news-item">
+              <time>2026.05.15</time>
+              <div>
+                <span>Release</span>
+                <h3>Kpop Groups API v2.0 com MongoDB Atlas</h3>
+              </div>
+            </article>
+            <article class="news-item">
+              <time>2026.05.14</time>
+              <div>
+                <span>Update</span>
+                <h3>Catalogo com grupos da 1st ate a 4th gen</h3>
+              </div>
+            </article>
+            <article class="news-item">
+              <time>2026.05.13</time>
+              <div>
+                <span>Deploy</span>
+                <h3>Swagger publicado com autenticacao JWT</h3>
+              </div>
+            </article>
+          </div>
+        </section>
+
+        <section class="section">
+          <div class="section-header">
+            <h2>Featured Groups</h2>
+            <button type="button" data-page="groups">View all</button>
+          </div>
+          <div class="members-scroll" id="featured-groups">
+            <p class="muted">Faca login para carregar os grupos.</p>
+          </div>
+        </section>
+      </section>
+
+      <section class="page" id="page-news">
+        <section class="section">
+          <div class="section-header">
+            <h2>News</h2>
+          </div>
+          <div class="news-list expanded">
+            <article class="news-item">
+              <time>2026.05.15</time>
+              <div><span>Release</span><h3>Kpop Groups API v2.0 com MongoDB Atlas</h3></div>
+            </article>
+            <article class="news-item">
+              <time>2026.05.14</time>
+              <div><span>Update</span><h3>38 grupos adicionados ao seed principal</h3></div>
+            </article>
+            <article class="news-item">
+              <time>2026.05.13</time>
+              <div><span>Docs</span><h3>Swagger com rotas de autenticacao e grupos</h3></div>
+            </article>
+            <article class="news-item">
+              <time>2026.05.12</time>
+              <div><span>QA</span><h3>Suite de integracao cobrindo CRUD de grupos</h3></div>
+            </article>
+          </div>
+        </section>
+      </section>
+
+      <section class="page" id="page-groups">
+        <section class="section">
+          <div class="section-header">
+            <h2>All Groups</h2>
+            <span class="section-count" id="groups-count">--</span>
+          </div>
+
+          <div class="stats-grid">
+            <div class="stat-box"><strong id="stat-total">--</strong><span>Total</span></div>
+            <div class="stat-box"><strong id="stat-g1">--</strong><span>1st Gen</span></div>
+            <div class="stat-box"><strong id="stat-g3">--</strong><span>3rd Gen</span></div>
+            <div class="stat-box"><strong id="stat-g4">--</strong><span>4th Gen</span></div>
+          </div>
+
+          <div class="toolbar">
+            <input id="search-input" type="search" placeholder="Search group..." autocomplete="off">
+            <div class="filters" aria-label="Filtros por geracao">
+              <button class="filter active" type="button" data-gen="0">All</button>
+              <button class="filter" type="button" data-gen="1">1st</button>
+              <button class="filter" type="button" data-gen="2">2nd</button>
+              <button class="filter" type="button" data-gen="3">3rd</button>
+              <button class="filter" type="button" data-gen="4">4th</button>
+            </div>
+          </div>
+
+          <div class="groups-grid" id="groups-grid">
+            <p class="muted">Faca login para carregar os grupos.</p>
+          </div>
+        </section>
+      </section>
+
+      <section class="page" id="page-members">
+        <section class="section">
+          <div class="section-header">
+            <h2>Members</h2>
+            <span class="section-count" id="members-count">--</span>
+          </div>
+          <div class="members-cloud" id="members-cloud">
+            <p class="muted">Faca login para visualizar os membros.</p>
+          </div>
+        </section>
+      </section>
+
+      <section class="page" id="page-api">
+        <section class="section api-section">
+          <div class="section-header">
+            <h2>API</h2>
+          </div>
+          <div class="api-grid">
+            <a href="/api-docs" target="_blank" rel="noreferrer">Swagger</a>
+            <a href="/api/groups" target="_blank" rel="noreferrer">GET /api/groups</a>
+            <a href="/api/auth/login" target="_blank" rel="noreferrer">POST /api/auth/login</a>
+          </div>
+        </section>
+      </section>
+
+      <section class="page" id="page-login">
+        <form class="login-card" id="login-form">
+          <h2>Login</h2>
+          <label>
+            Username
+            <input id="username" name="username" type="text" autocomplete="username" value="admin">
+          </label>
+          <label>
+            Password
+            <input id="password" name="password" type="password" autocomplete="current-password" value="123">
+          </label>
+          <button type="submit">Entrar</button>
+          <p id="login-message" class="login-message"></p>
+        </form>
+      </section>
+
+      <section class="page" id="page-detail">
+        <button class="back-btn" type="button" data-page="groups">Back to groups</button>
+        <div class="detail-hero">
+          <p id="detail-generation">Generation</p>
+          <h2 id="detail-name">Group</h2>
+          <span id="detail-fandom">Fandom</span>
+          <div class="detail-meta">
+            <div><small>Debut</small><strong id="detail-year">--</strong></div>
+            <div><small>Members</small><strong id="detail-total">--</strong></div>
+          </div>
+        </div>
+        <section class="section">
+          <div class="section-header">
+            <h2>Members</h2>
+          </div>
+          <div class="members-chips" id="detail-members"></div>
+        </section>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <strong>K<span>POP</span> GROUPS</strong>
+      <small>2026 kpop-api-qa</small>
+    </footer>
+  </div>
+
+  <script src="/app.js"></script>
+</body>
+</html>
