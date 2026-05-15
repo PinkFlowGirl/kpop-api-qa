@@ -46,13 +46,21 @@ Testar os casos principais de API para gerenciamento de grupos de K-pop:
 | TST-API-03 | Evitar duplicação de nome | Usuário autenticado; grupo com mesmo nome existente | 1. POST /api/groups com nome duplicado | 400, `ok: false`, mensagem de duplicação |
 | TST-API-04 | Validar payload inválido | Usuário autenticado | 1. POST /api/groups com dados inválidos | 400, `ok: false`, mensagem de erro de validação |
 | TST-API-05 | Listar grupos autenticado | Usuário autenticado | 1. GET /api/groups | 200, `ok: true`, `data` é lista de grupos |
-| TST-API-06 | Bloquear listagem sem token | Sem token | 1. GET /api/groups | 401, `ok: false`, mensagem de token inválido/ausente |
+| TST-API-06 | Bloquear listagem sem token | Sem token | 1. GET /api/groups sem header Authorization | 401, `ok: false`, mensagem de token não informado |
+| TST-API-06B | Bloquear listagem com token inválido | Token inválido | 1. GET /api/groups com token inválido | 401, ok: false, message: "Token inválido" | 
 | TST-API-07 | Consultar grupo por ID válido | Usuário autenticado; grupo existente | 1. GET /api/groups/{id} | 200, `ok: true`, `data` com grupo correto |
 | TST-API-08 | Consultar grupo por ID inexistente | Usuário autenticado | 1. GET /api/groups/{id}` inexistente | 404, `ok: false`, `message: "Grupo não encontrado"` |
 | TST-API-09 | Atualizar grupo existente | Usuário autenticado; grupo existente | 1. PUT /api/groups/{id} com dados válidos | 200, `ok: true`, `message: "Grupo atualizado com sucesso"`, `data` atualizado |
 | TST-API-10 | Excluir grupo existente | Usuário autenticado; grupo existente | 1. DELETE /api/groups/{id} | 200, `ok: true`, `message: "Grupo removido com sucesso"`, `data` removido |
 | TST-API-11 | Verificar grupo removido | Usuário autenticado; grupo excluído | 1. GET /api/groups/{id} | 404, `ok: false`, `message: "Grupo não encontrado"` |
-
+| TST-API-12 |	Login com credenciais erradas |	API em execução	| 1. POST /api/auth/login com senha incorreta |	401, ok: false |
+|TST-API-13  |	Login com body vazio |	API em execução | 1. POST /api/auth/login com body vazio {} | 400, ok: false |
+|TST-API-14  |	Consultar grupo por ID inválido (texto) | Usuário autenticado |	1. GET /api/groups/abc| 404, ok: false — Bug BR-006: deveria retornar 400
+|TST-API-15  |	Atualizar grupo com ID inexistente | Usuário autenticado | 1. PUT /api/groups/999 com dados válidos | 404, ok: false
+|TST-API-16  |	Deletar grupo com ID inexistente | Usuário autenticado | 1. DELETE /api/groups/999 | 404, ok: false
+|TST-API-17  |	Criar grupo com debutYear como texto |	Usuário autenticado | 1. POST /api/groups com debutYear: "dois mil" |	400, ok: false
+|TST-API-18  |	Criar grupo com generation negativo | Usuário autenticado | 1. POST /api/groups com generation: -1 | 201 — Bug BR-007: deveria retornar 400
+|TST-API-19  |	Criar grupo com name muito longo | Usuário autenticado | 1. POST /api/groups com name de 500 caracteres|	201 — Bug BR-008: deveria retornar 400
 ## Observações
 - A coleta de dados de teste deve ser registrada em ambiente controlado.
 - A prova do resultado deve incluir request/response e log de execução.

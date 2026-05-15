@@ -30,17 +30,27 @@ Este plano de testes descreve a estratégia e o escopo para validar a API K-pop,
 - `wiki/Casos-de-Teste.md`
 
 ## 5. Abordagem de Teste
-### 5.1 Testes Funcionais
+
+5.1 Testes Funcionais
 - Executar casos de teste automatizados que validam os fluxos de API.
 - Validar respostas HTTP, payload e regras de negócio.
 
-### 5.2 Testes de Regressão
+## 5.2 Testes de Regressão
 - Re-executar casos existentes sempre que houver alterações em endpoints ou regras.
 - Garantir que novos recursos não quebrem funcionalidades prévias.
 
-### 5.3 Testes de Segurança Básicos
+## 5.3 Testes de Segurança Básicos
 - Verificar acesso sem token.
 - Verificar token inválido.
+
+## 5.4 Testes de Performance
+- Executar testes de carga com k6 para validar tempo de resposta e estabilidade.
+- Verificar thresholds definidos: p95 < 500ms e p99 < 1000ms.
+
+## 5.5 Testes Exploratórios
+- Executar sessões de teste exploratório baseadas em charters documentados.
+- Cobrir áreas de risco como autenticação, validações de entrada e casos extremos.
+- Documentação dos charters disponível em wiki/9 - Testes Exploratórios (Charters).
 
 ## 6. Critérios de Saída
 ### 6.1 Critérios de Entrada
@@ -66,7 +76,7 @@ Este plano de testes descreve a estratégia e o escopo para validar a API K-pop,
 ## 9. Riscos e Restrições
 - Diferenças entre a especificação Swagger e a implementação podem gerar falsos positivos.
 - Dependência de autenticação e dados iniciais no banco em memória.
-- Arquivos Postman ausentes na coleção do repositório podem reduzir cobertura de integração manual.
+- Bugs abertos (BR-005, BR-006, BR-007, BR-008) podem impactar validações futuras — ver wiki/8 - Relatório de Bugs.
 
 ## 10. Responsabilidades
 - Desenvolvedora: manter casos de teste automatizados e documentação atualizada.
