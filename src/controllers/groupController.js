@@ -34,6 +34,13 @@ exports.getAllGroups = async (req, res) => {
 
 exports.getGroupById = async (req, res) => {
   try {
+    const mongoose = require('mongoose');
+    if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
+      return res.status(404).json({
+        ok: false,
+        message: "Grupo não encontrado"
+      });
+    }
     const group = await groupService.getGroupById(req.params.id);
     if (!group) {
       return res.status(404).json({
