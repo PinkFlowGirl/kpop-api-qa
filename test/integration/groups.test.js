@@ -9,7 +9,7 @@ describe('Groups API - /api/groups', () => {
   let token = '';
   let groupId = '';
 
- before(async () => {
+  before(async () => {
     if (mongoose.connection.readyState === 0) {
       await mongoose.connect(process.env.MONGODB_URI_TEST || process.env.MONGODB_URI);
     }
@@ -144,8 +144,8 @@ describe('Groups API - /api/groups', () => {
         members: ['A']
       });
 
-    // Bug BR-007: API aceita generation negativo, deveria retornar 400
-    expect(res.status).to.equal(201);
+    expect(res.status).to.equal(400);
+    expect(res.body.message).to.include('positivo');
   });
 
   it('não deve criar grupo com name muito longo', async () => {
@@ -160,8 +160,8 @@ describe('Groups API - /api/groups', () => {
         members: ['A']
       });
 
-    // Bug BR-008: API aceita nome com 500 caracteres, deveria retornar 400
-    expect(res.status).to.equal(201);
+    expect(res.status).to.equal(400);
+    expect(res.body.message).to.include('100 caracteres');
   });
 
   // ---------------- GET ----------------
