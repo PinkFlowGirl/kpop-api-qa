@@ -9,21 +9,13 @@ describe('Groups API - /api/groups', () => {
   let token = '';
   let groupId = '';
 
-  before(async () => {
+ before(async () => {
     if (mongoose.connection.readyState === 0) {
       await mongoose.connect(process.env.MONGODB_URI_TEST || process.env.MONGODB_URI);
     }
     await Group.deleteMany({});
 
     token = await getToken();
-
-    await Group.create({
-      name: 'BTS',
-      debutYear: 2013,
-      fandom: 'ARMY',
-      generation: 3,
-      members: ['RM', 'Jin']
-    });
 
     const res = await request(app)
       .post('/api/groups')
@@ -113,7 +105,7 @@ describe('Groups API - /api/groups', () => {
       .post('/api/groups')
       .set('Authorization', `Bearer ${token}`)
       .send({
-        name: 'BTS',
+        name: 'Group CRUD Test',
         debutYear: 2013,
         fandom: 'ARMY',
         generation: 3,
