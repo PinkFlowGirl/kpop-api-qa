@@ -7,6 +7,10 @@ function validateGroup(data) {
     throw new Error('O campo "name" é obrigatório e deve ser uma string não vazia');
   }
 
+  if (name.length > 100) {
+    throw new Error('O campo "name" deve ter no máximo 100 caracteres');
+  }
+
   if (!fandom || typeof fandom !== 'string' || !fandom.trim()) {
     throw new Error('O campo "fandom" é obrigatório e deve ser uma string não vazia');
   }
@@ -15,8 +19,10 @@ function validateGroup(data) {
     throw new Error('O campo "debutYear" é obrigatório e deve ser um número');
   }
 
-  if (generation !== undefined && typeof generation !== 'number') {
-    throw new Error('O campo "generation" deve ser um número');
+  if (generation !== undefined) {
+    if (typeof generation !== 'number' || generation < 0) {
+      throw new Error('O campo "generation" deve ser um número positivo');
+    }
   }
 
   if (members !== undefined) {
