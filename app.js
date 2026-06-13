@@ -55,4 +55,23 @@ if (require.main === module) {
     console.log(`Swagger: http://localhost:${PORT}/api-docs`);
   });
 }
+
+// 404 - Rota não encontrada
+app.use((req, res) => {
+  res.status(404).json({
+    ok: false,
+    message: `Rota não encontrada: ${req.method} ${req.originalUrl}`
+  });
+});
+
+// Middleware de erro global
+app.use((err, req, res, next) => {
+  console.error('❌ Erro não tratado:', err.message);
+  const statusCode = err.statusCode || 500;
+  res.status(statusCode).json({
+    ok: false,
+    message: err.message || 'Erro interno do servidor'
+  });
+});
+
 module.exports = app;
