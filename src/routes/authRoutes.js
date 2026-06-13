@@ -1,41 +1,18 @@
 const express = require('express');
 const router = express.Router();
 const jwt = require('jsonwebtoken');
+const bcrypt = require('bcryptjs');
+const User = require('../models/userModel');
 
-const JWT_SECRET = process.env.JWT_SECRET || "kpop-secret-key";
+if (!process.env.JWT_SECRET) {
+  throw new Error('JWT_SECRET não definido. Configure a variável de ambiente antes de iniciar o servidor.');
+}
 
-/**
- * @swagger
- * tags:
- *   - name: Auth
- *     description: Autenticação da API
- */
+const JWT_SECRET = process.env.JWT_SECRET;
 
-/**
- * @swagger
- * /auth/login:
- *   post:
- *     summary: Faz login e retorna um token JWT
- *     tags: [Auth]
- *     security: []
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             $ref: '#/components/schemas/LoginRequest'
- *     responses:
- *       200:
- *         description: Login realizado com sucesso
- *       400:
- *         description: Erro de validação nos dados enviados na requisição
- *       401:
- *         description: Usuário não autenticado
- */
-router.post('/login', (req, res) => {
+router.post('/login', async (req, res) => {
   const { username, password } = req.body;
 
-  
   if (!username || !password) {
     return res.status(400).json({
       ok: false,
@@ -43,19 +20,29 @@ router.post('/login', (req, res) => {
     });
   }
 
- 
-  if (username === "admin" && password === "123") {
-    const token = jwt.sign({ username }, JWT_SECRET, { expiresIn: "1h" });
+  const user = await User.findOne({ username });
 
-    return res.status(200).json({
-      ok: true,
-      token
+  if (!user) {
+    return res.status(401).json({
+      ok: false,
+      message: 'Credenciais inválidas'
     });
   }
 
-  return res.status(401).json({
-    ok: false,
-    message: "Token inválido"
+  const passwordMatch = await bcrypt.compare(password, user.password);
+
+  if (!passwordMatch) {
+    return res.status(401).json({
+      ok: false,
+      message: 'Credenciais inválidas'
+    });
+  }
+
+  const token = jwt.sign({ username: user.username }, JWT_SECRET, { expiresIn: '1h' });
+
+  return res.status(200).json({
+    ok: true,
+    token
   });
 });
 
