@@ -6,7 +6,7 @@ async function getToken() {
     .post('/api/auth/login')
     .send({
       username: 'admin',
-      password: '123'
+      password: 'Admin2026!'
     });
 
   if (response.status !== 200) {

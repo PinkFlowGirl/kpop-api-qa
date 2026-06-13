@@ -15,6 +15,12 @@ describe('Groups API - /api/groups', () => {
     }
     await Group.deleteMany({});
 
+    const bcrypt = require('bcryptjs');
+    const User = require('../../src/models/userModel');
+    await User.deleteMany({});
+    const hash = await bcrypt.hash('Admin2026!', 10);
+    await User.create({ username: 'admin', password: hash });
+    
     token = await getToken();
 
     const res = await request(app)
