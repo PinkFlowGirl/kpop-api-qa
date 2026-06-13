@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "app.js",
   "scripts": {
-    "test": "mocha test/**/*.js --timeout 10000 --exit",
+    "test": "mocha test/**/*.js --timeout 10000 --exit --reporter mochawesome --reporter-options reportDir=mochawesome-report,overwrite=true,html=true,json=true",
     "start": "node app.js"
   },
   "keywords": [],
