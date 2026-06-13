@@ -5,10 +5,24 @@ dns.setServers(['8.8.8.8', '8.8.4.4']);
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
+const rateLimit = require('express-rate-limit');
 const path = require('path');
 const app = express();
 app.use(express.json());
 app.use(cors());
+
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutos
+  max: 100, // máximo 100 requisições por IP
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: {
+    ok: false,
+    message: 'Muitas requisições. Tente novamente em 15 minutos.'
+  }
+});
+
+app.use('/api/', limiter);
 app.use(express.static(path.join(__dirname, 'public')));
 
 async function connectDB() {
