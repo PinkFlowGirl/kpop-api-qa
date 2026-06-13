@@ -9,7 +9,7 @@ Este projeto demonstra práticas de qualidade de software, incluindo testes de i
 ## Tecnologias
 
 - Node.js + Express
-- Banco de dados em memória (in-memory)
+- MongoDB Atlas + Mongoose (banco de dados em nuvem)
 - JWT (autenticação)
 - Swagger (documentação da API)
 - Mocha + Chai + Supertest (testes de integração)
