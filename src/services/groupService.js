@@ -1,5 +1,9 @@
 const Group = require('../models/groupModel');
 
+function escapeRegExp(string) {
+  return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
+
 function validateGroup(data) {
   const { name, fandom, debutYear, generation, members } = data;
 
@@ -41,7 +45,7 @@ function validateGroup(data) {
 async function createGroup(data) {
   validateGroup(data);
 
-  const existingGroup = await Group.findOne({ name: { $regex: new RegExp(`^${data.name}$`, 'i') } });
+ const existingGroup = await Group.findOne({ name: { $regex: new RegExp(`^${escapeRegExp(data.name)}$`, 'i') } });
   if (existingGroup) {
     throw new Error(`Um grupo com o nome "${data.name}" já existe`);
   }
